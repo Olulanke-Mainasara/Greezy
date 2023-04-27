@@ -1,3 +1,6 @@
+import DayForecast from '@/components/DayForecast';
+import Main from '@/components/Main/Main';
+import Nav from '@/components/Nav';
 import Head from 'next/head'
 
 export default function Home() {
@@ -9,9 +12,13 @@ export default function Home() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <main className="">
-        <h1>Greezy</h1>
+      <main className="bg-[#262626]">
+        <div className='flex flex-col w-full min-h-[100dvh] xl:h-screen gap-10 p-6 xl:flex-row xl:gap-8'>
+          <Nav />
+          <Main />
+          <DayForecast />
+        </div>
       </main>
     </>
-  )
+  );
 }
