@@ -11,7 +11,7 @@ const Nav = () => {
         G<i className="fa-solid fa-wind text-[41px] allT:text-[31px]"></i>
       </Link>
 
-      <ul className="flex items-center justify-around text-white xl:flex-col gap-11 2xl:gap-20">
+      <ul className="flex items-center justify-around w-full text-white xl:flex-col gap-11 2xl:gap-20">
         <li>
           <button
             title="Weather"
