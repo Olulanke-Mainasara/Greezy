@@ -1,9 +1,77 @@
-import DayForecast from '@/components/DayForecast';
-import Main from '@/components/Main/Main';
-import Nav from '@/components/Nav';
-import Head from 'next/head'
+import DayForecast from "@/components/DayForecast";
+import Main from "@/components/Main/Main";
+import Nav from "@/components/Nav";
+import Head from "next/head";
+import { useEffect, useState } from "react";
+import { useQuery } from "react-query";
 
 export default function Home() {
+  const [supported, setSupported] = useState(true);
+  const [location, setLocation] = useState(null);
+
+  useEffect(() => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          setLocation(position.coords);
+        },
+        (error) => {
+          setSupported(false);
+        }
+      );
+    } else {
+      setSupported(false);
+    }
+  }, []);
+
+  async function fetchData(location) {
+    const rawData = await fetch(
+      `https://api.open-meteo.com/v1/forecast?latitude=${location.latitude}&longitude=${location.longitude}&hourly=temperature_2m,relativehumidity_2m,apparent_temperature,weathercode,pressure_msl,visibility,windspeed_80m,winddirection_80m&models=best_match&daily=weathercode,temperature_2m_max,temperature_2m_min,sunrise,sunset&current_weather=true&windspeed_unit=ms&timezone=auto`
+    );
+    const jsonData = rawData.json();
+    return jsonData;
+  }
+
+  const { data, isLoading, isError } = useQuery(
+    "weatherInfo",
+    () => fetchData(location),
+    {
+      enabled: !!location,
+      staleTime: 600000,
+    }
+  );
+
+
+  if (!supported) {
+    return (
+      <div className="absolute top-0 left-0 z-20 flex items-center justify-center w-full h-full text-white backdrop-brightness-[25%]">
+        <h1 className="text-2xl md:text-3xl">Geolocation is not supported</h1>
+      </div>
+    );
+  }
+
+  if (isLoading) {
+    return (
+      <div className="absolute top-0 left-0 z-20 flex items-center justify-center w-full h-full text-white backdrop-brightness-[25%]">
+        <h1 className="text-2xl md:text-3xl">Getting weather information...</h1>
+      </div>
+    );
+  }
+
+  if (isError) {
+    return (
+      <div className="absolute top-0 left-0 z-20 flex flex-col gap-6 items-center justify-center w-full h-full text-white backdrop-brightness-[25%]">
+        <h1 className="text-2xl md:text-3xl">An error occurred</h1>
+        <button
+          className="px-4 py-2 text-black bg-white rounded-lg"
+          onClick={() => window.location.reload()}
+        >
+          Refresh
+        </button>
+      </div>
+    );
+  }
+
   return (
     <>
       <Head>
@@ -13,7 +81,7 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main className="bg-[#262626]">
-        <div className='flex flex-col w-full min-h-[100dvh] xl:h-screen gap-10 p-6 xl:flex-row xl:gap-8'>
+        <div className="flex flex-col w-full min-h-[100dvh] xl:h-screen gap-12 p-4 xl:flex-row xl:gap-8">
           <Nav />
           <Main />
           <DayForecast />
