@@ -32,7 +32,7 @@ const TodayInfo = () => {
       <h1 className="flex items-center justify-between gap-4 text-3xl">
         Today&apos;s Forecast
         <span className="flex items-center gap-2 text-base">
-          slide right <FaArrowRight />
+          slide <FaArrowRight />
         </span>
       </h1>
 

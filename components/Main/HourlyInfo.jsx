@@ -81,7 +81,7 @@ const HourlyInfo = () => {
       <h1 className="flex items-center justify-between gap-4 text-3xl">
         Air Conditions
         <span className="flex items-center gap-2 text-base">
-          scroll down <FaArrowDown />
+          scroll <FaArrowDown />
         </span>
       </h1>
 

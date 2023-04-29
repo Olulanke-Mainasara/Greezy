@@ -2,27 +2,44 @@ import DayForecast from "@/components/DayForecast";
 import Main from "@/components/Main/Main";
 import Nav from "@/components/Nav";
 import Head from "next/head";
+import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useQuery } from "react-query";
+import { useLocalStorage } from "react-use";
+import { useQueryClient } from "react-query";
 
 export default function Home() {
   const [supported, setSupported] = useState(true);
   const [location, setLocation] = useState(null);
+  const [confirmed, setConfirmed] = useLocalStorage("confirmed");
+  const [askUser, setAskUser] = useState(true);
+  const queryClient = useQueryClient();
+  const weatherInfo = queryClient.getQueryData("weatherInfo");
+
+  const handleLocationClick = () => {
+    setConfirmed("true");
+  };
 
   useEffect(() => {
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        (position) => {
-          setLocation(position.coords);
-        },
-        (error) => {
-          setSupported(false);
-        }
-      );
-    } else {
+    if (!navigator.geolocation) {
       setSupported(false);
     }
-  }, []);
+
+    if (confirmed === "true") {
+      if (!weatherInfo) {
+        navigator.geolocation.getCurrentPosition(
+          (position) => {
+            setLocation(position.coords);
+          },
+          (error) => {
+            setSupported(false);
+          }
+        );
+      }
+
+      setAskUser(false);
+    }
+  }, [confirmed, weatherInfo]);
 
   async function fetchData(location) {
     const rawData = await fetch(
@@ -32,7 +49,7 @@ export default function Home() {
     return jsonData;
   }
 
-  const { data, isLoading, isError } = useQuery(
+  const { isLoading, isError } = useQuery(
     "weatherInfo",
     () => fetchData(location),
     {
@@ -41,11 +58,24 @@ export default function Home() {
     }
   );
 
-
   if (!supported) {
     return (
-      <div className="absolute top-0 left-0 z-20 flex items-center justify-center w-full h-full text-white backdrop-brightness-[25%]">
-        <h1 className="text-2xl md:text-3xl">Geolocation is not supported</h1>
+      <div className="absolute top-0 left-0 z-20 flex flex-col gap-6 items-center justify-center w-full h-full text-white backdrop-brightness-[25%]">
+        <h1 className="text-2xl text-center md:text-4xl">
+          Geolocation is not supported
+        </h1>
+        <p className="text-center w-[95%] max-w-sm">
+          Please check your settings and allow location access for this website
+          or check your internet connectivity and make sure you are connected.
+          If after confirming all these, it still doesn&apos;t work, then
+          geolocation is not supported by the browser you are currently using
+        </p>
+        <button
+          className="px-8 py-2 text-black duration-300 bg-white rounded-lg hover:bg-black hover:text-white"
+          onClick={() => window.location.reload()}
+        >
+          Reload
+        </button>
       </div>
     );
   }
@@ -53,7 +83,9 @@ export default function Home() {
   if (isLoading) {
     return (
       <div className="absolute top-0 left-0 z-20 flex items-center justify-center w-full h-full text-white backdrop-brightness-[25%]">
-        <h1 className="text-2xl md:text-3xl">Getting weather information...</h1>
+        <h1 className="text-2xl text-center md:text-3xl">
+          Getting weather information...
+        </h1>
       </div>
     );
   }
@@ -61,12 +93,17 @@ export default function Home() {
   if (isError) {
     return (
       <div className="absolute top-0 left-0 z-20 flex flex-col gap-6 items-center justify-center w-full h-full text-white backdrop-brightness-[25%]">
-        <h1 className="text-2xl md:text-3xl">An error occurred</h1>
+        <h1 className="text-2xl text-center md:text-3xl">An error occurred</h1>
+        <p className="text-center w-[95%] max-w-sm">
+          A server error occurred, try reloading the browser and if the error
+          persists, please contact my developers for more info and a possible
+          resolution of the error
+        </p>
         <button
-          className="px-4 py-2 text-black bg-white rounded-lg"
+          className="px-8 py-2 text-black duration-300 bg-white rounded-lg hover:bg-black hover:text-white"
           onClick={() => window.location.reload()}
         >
-          Refresh
+          Reload
         </button>
       </div>
     );
@@ -87,6 +124,32 @@ export default function Home() {
           <DayForecast />
         </div>
       </main>
+
+      {askUser && (
+        <div className="absolute top-0 left-0 z-20 flex flex-col gap-6 items-center justify-center w-full h-full text-white backdrop-brightness-[10%]">
+          <h1 className="w-[90%] text-2xl text-center md:text-4xl">
+            We need your location 👉👈
+          </h1>
+          <p className="text-center w-[95%] max-w-sm">
+            In order to display accurate weather information for you, our
+            website would need to access your location
+          </p>
+          <div className="flex gap-6">
+            <Link
+              className="px-8 py-2 text-black duration-300 bg-white rounded-lg hover:bg-black hover:text-white"
+              href={"/cities"}
+            >
+              Deny
+            </Link>
+            <button
+              className="px-8 py-2 text-black duration-300 bg-white rounded-lg hover:bg-black hover:text-white"
+              onClick={handleLocationClick}
+            >
+              Allow
+            </button>
+          </div>
+        </div>
+      )}
     </>
   );
 }

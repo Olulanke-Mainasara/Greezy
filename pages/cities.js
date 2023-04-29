@@ -7,10 +7,12 @@ import CityResult from "@/components/CityResult";
 
 const Cities = () => {
   const [searchResults, setSearchResults] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   const handleKeyPress = async (e) => {
     if (e.key === "Enter") {
       e.preventDefault();
+      setLoading(true);
       try {
         const operation = {
           method: "GET",
@@ -25,12 +27,12 @@ const Cities = () => {
         const jsonData = await rawData.json();
 
         setSearchResults(jsonData);
+        setLoading(false);
       } catch (error) {
         console.log(error.message);
       }
     }
   };
-
 
   return (
     <>
@@ -49,9 +51,7 @@ const Cities = () => {
                 Cities
               </h1>
 
-              <form
-                className="flex items-center w-full h-10 gap-2 pl-2 border rounded-lg"
-              >
+              <form className="flex items-center w-full h-10 gap-2 pl-2 border rounded-lg">
                 <FaSearch color="#fff" />
                 <input
                   type="search"
@@ -62,11 +62,21 @@ const Cities = () => {
               </form>
             </div>
 
-            <div className="grid grid-cols-1 gap-10 xl:gap-y-14 md:grid-cols-3">
-              {searchResults.map((result) => (
-                <CityResult key={Math.random() * 10000} result={result} />
-              ))}
-            </div>
+            {(loading == false) & (searchResults.length == 0) ? (
+              <div className="flex items-center justify-center p-8 pt-4 grow">
+                <h1 className="text-2xl text-white">No searches...</h1>
+              </div>
+            ) : (loading == false) & (searchResults.length > 0) ? (
+              <div className="grid grid-cols-1 gap-10 xl:gap-y-14 md:grid-cols-3 grow">
+                {searchResults.map((result) => (
+                  <CityResult key={Math.random() * 10000} result={result} />
+                ))}
+              </div>
+            ) : (
+              <div className="flex items-center justify-center p-8 pt-4 grow">
+                <h1 className="text-3xl text-white">Locating...</h1>
+              </div>
+            )}
           </section>
           <DayForecast />
         </div>

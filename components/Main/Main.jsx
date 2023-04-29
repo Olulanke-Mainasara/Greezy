@@ -1,7 +1,7 @@
-import React from 'react'
-import QuickInfo from './QuickInfo';
-import TodayInfo from './TodayInfo';
-import HourlyInfo from './HourlyInfo';
+import React from "react";
+import QuickInfo from "./QuickInfo";
+import TodayInfo from "./TodayInfo";
+import HourlyInfo from "./HourlyInfo";
 
 const Main = () => {
   return (
@@ -11,6 +11,6 @@ const Main = () => {
       <HourlyInfo />
     </section>
   );
-}
+};
 
-export default Main
+export default Main;

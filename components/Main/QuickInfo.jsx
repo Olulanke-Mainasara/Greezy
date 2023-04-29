@@ -1,12 +1,11 @@
-import React, { useState } from "react";
+import React from "react";
 import { useQueryClient } from "react-query";
 import gettingCurrentConditions from "@/utils/getCurrentConditions";
-import getUvInfo from "@/utils/getUvInfo";
 import { FaMapMarkerAlt, FaSun, FaWind } from "react-icons/fa";
+import UvInfo from "./UvInfo";
 
 const QuickInfo = () => {
   const queryClient = useQueryClient();
-  const [uvInfo] = useState(getUvInfo());
 
   // Retrieve weather data from the cache
   const weatherData = queryClient.getQueryData("weatherInfo");
@@ -76,15 +75,7 @@ const QuickInfo = () => {
         <h1 className="text-xl">m / s</h1>
       </section>
 
-      <section className="flex flex-col items-center border shadow-2xl rounded-3xl justify-evenly md:h-48 h-44 xl:h-full">
-        <h1 className="text-xl">U.V Index</h1>
-        <h1 id="uvIndex" className="sm:text-5xl text-7xl">
-          {/* {uvInfo[0] || "- -"} */}
-        </h1>
-        <h1 id="exposureLevel" className="text-xl">
-          {/* {uvInfo[1]} */}
-        </h1>
-      </section>
+      <UvInfo />
     </section>
   );
 };

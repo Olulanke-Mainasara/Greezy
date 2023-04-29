@@ -33,7 +33,7 @@ const Nav = () => {
           </Link>
         </li>
 
-        <li className="hidden text-center md:block md:text-sm">
+        <li className="hidden text-sm text-center xl:block">
           ©Greezy <br /> 2023
         </li>
       </ul>
