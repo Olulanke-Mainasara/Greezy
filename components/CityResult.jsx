@@ -24,9 +24,11 @@ const CityResult = ({ result }) => {
   return (
     <article className="flex flex-col justify-around w-full p-5 mx-auto text-white border shadow-2xl h-52 sm:aspect-square rounded-3xl xl:w-52">
       <h1 className="text-base">
-        {result.name + ", " + result.state + ", " + result.country}
+        {Object.keys(result).length == 5
+          ? result.name + ", " + result.state + ", " + result.country
+          : result.name + ", " + result.country}
       </h1>
-      <h1 className="text-6xl text-center">{cityData.temperature + "°"}</h1>
+      <h1 className="text-6xl text-center">{cityData.temperature + "°C"}</h1>
       <h1 className="text-base text-right">
         {gettingCurrentConditions(cityData.weathercode)}
       </h1>

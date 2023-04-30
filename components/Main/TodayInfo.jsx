@@ -44,13 +44,15 @@ const TodayInfo = () => {
             const furtherSplitTime = splitDate[1].split(":");
 
             if (
-              furtherSplitDate[2] < accurateDate.getDate() ||
+              (furtherSplitDate[2] < accurateDate.getDate() &&
+                furtherSplitDate[1] == accurateDate.getMonth() + 1) ||
               furtherSplitDate[2] > accurateDate.getDate() + 1
             ) {
               return;
             } else if (
-              furtherSplitDate[2] == accurateDate.getDate() &&
-              furtherSplitTime[0] < accurateDate.getHours()
+              (furtherSplitDate[2] == accurateDate.getDate() &&
+                furtherSplitTime[0] < accurateDate.getHours()) ||
+              furtherSplitDate[2] > accurateDate.getDate() + 1
             ) {
               return;
             }

@@ -60,7 +60,7 @@ const QuickInfo = () => {
           {location[1]}
         </h1>
         <h1 id="currentWeather" className="text-5xl sm:text-7xl">
-          {weatherData.current_weather.temperature + "°"}
+          {weatherData.current_weather.temperature + "°C"}
         </h1>
         <h1 id="currentCondition" className="text-xl text-center">
           {gettingCurrentConditions(weatherData.current_weather.weathercode)}
@@ -70,7 +70,7 @@ const QuickInfo = () => {
       <section className="flex flex-col items-center border shadow-2xl rounded-3xl justify-evenly md:h-48 h-44 xl:h-full">
         <h1 className="text-xl">Wind Speed</h1>
         <h1 id="windSpeed" className="text-5xl sm:text-7xl">
-          {Math.round(weatherData.current_weather.windspeed)}
+          {weatherData.current_weather.windspeed}
         </h1>
         <h1 className="text-xl">m / s</h1>
       </section>

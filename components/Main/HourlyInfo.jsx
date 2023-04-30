@@ -104,7 +104,7 @@ const HourlyInfo = () => {
                     id="realFeel"
                     className="text-3xl allEM:text-2xl allT:text-xl"
                   >
-                    {realFeel[index] + "°"}
+                    {realFeel[index] + "°C"}
                   </h1>
                 </div>
                 <div className="flex flex-col justify-end h-40 p-4 border shadow-2xl md:min-h-[176px] rounded-3xl xs:h-32">

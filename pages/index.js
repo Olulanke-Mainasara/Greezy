@@ -62,13 +62,13 @@ export default function Home() {
     return (
       <div className="absolute top-0 left-0 z-20 flex flex-col gap-6 items-center justify-center w-full h-full text-white backdrop-brightness-[25%]">
         <h1 className="text-2xl text-center md:text-4xl">
-          Geolocation is not supported
+          Geolocation is not active / supported
         </h1>
-        <p className="text-center w-[95%] max-w-sm">
+        <p className="text-center w-[95%] max-w-lg">
           Please check your settings and allow location access for this website
           or check your internet connectivity and make sure you are connected.
           If after confirming all these, it still doesn&apos;t work, then
-          geolocation is not supported by the browser you are currently using
+          geolocation is NOT supported by the browser you are currently using.
         </p>
         <button
           className="px-8 py-2 text-black duration-300 bg-white rounded-lg hover:bg-black hover:text-white"
@@ -97,7 +97,7 @@ export default function Home() {
         <p className="text-center w-[95%] max-w-sm">
           A server error occurred, try reloading the browser and if the error
           persists, please contact my developers for more info and a possible
-          resolution of the error
+          resolution of the error.
         </p>
         <button
           className="px-8 py-2 text-black duration-300 bg-white rounded-lg hover:bg-black hover:text-white"
