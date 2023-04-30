@@ -37,7 +37,7 @@ const QuickInfo = () => {
 
         <section className="flex flex-col items-center border shadow-2xl rounded-3xl justify-evenly md:h-48 h-44 xl:h-full">
           <h1 className="flex items-center gap-2 text-xl">
-            - - <FaSun />
+            <FaSun /> - -
           </h1>
           <h1 id="uvIndex" className="sm:text-5xl text-7xl">
             - -
