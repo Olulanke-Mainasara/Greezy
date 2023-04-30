@@ -54,7 +54,7 @@ export default function Home() {
     () => fetchData(location),
     {
       enabled: !!location,
-      staleTime: 600000,
+      staleTime: 120000,
     }
   );
 
@@ -117,7 +117,9 @@ export default function Home() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <main className="bg-[#262626]">
+      <main
+        className={`bg-[#262626] ${askUser ? "overflow-hidden h-screen" : ""}`}
+      >
         <div className="flex flex-col w-full min-h-[100dvh] xl:h-screen gap-12 p-4 xl:flex-row xl:gap-8">
           <Nav />
           <Main />
