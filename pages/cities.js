@@ -4,6 +4,7 @@ import Nav from "@/components/Nav";
 import DayForecast from "@/components/DayForecast";
 import { FaSearch } from "react-icons/fa";
 import CityResult from "@/components/CityResult";
+import getCities from "./api/getCities";
 
 const Cities = () => {
   const [searchResults, setSearchResults] = useState([]);
@@ -14,19 +15,9 @@ const Cities = () => {
       e.preventDefault();
       setLoading(true);
       try {
-        const operation = {
-          method: "GET",
-          headers: { "X-Api-Key": process.env.NEXT_PUBLIC_API_KEY },
-          contentType: "application/json",
-        };
+        const data = await getCities(e);
 
-        const rawData = await fetch(
-          "https://api.api-ninjas.com/v1/geocoding?city=" + e.target.value,
-          operation
-        );
-        const jsonData = await rawData.json();
-
-        setSearchResults(jsonData);
+        setSearchResults(data);
         setLoading(false);
       } catch (error) {
         console.log(error.message);
