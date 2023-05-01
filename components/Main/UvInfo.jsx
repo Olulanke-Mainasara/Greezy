@@ -6,6 +6,7 @@ const UvInfo = () => {
 
   const getUvInfo = async () => {
     try {
+      setExposureLevel("Loading...")
       let myHeaders = new Headers();
       myHeaders.append("x-access-token", process.env.NEXT_PUBLIC_UV_API_KEY);
       myHeaders.append("Content-Type", "application/json");
@@ -25,23 +26,23 @@ const UvInfo = () => {
 
       setUvIndex(Math.round(uv));
     } catch (error) {
-      console.log(error.message);
+      setExposureLevel("API quota 😔");
     }
   };
 
   const getExposureLevel = (uv) => {
-    if (uv === null) {
-      setExposureLevel("Loading...");
-    } else if (uv <= 2) {
-      setExposureLevel("Low");
-    } else if (uv >= 3 && uv <= 5) {
-      setExposureLevel("Moderate");
-    } else if (uv >= 6 && uv <= 8) {
-      setExposureLevel("High");
-    } else if (uv >= 9 && uv <= 10) {
-      setExposureLevel("Very High");
-    } else if (uv >= 11) {
-      setExposureLevel("Extreme");
+    if (uv !== null) {
+      if (uv <= 2) {
+        setExposureLevel("Low");
+      } else if (uv >= 3 && uv <= 5) {
+        setExposureLevel("Moderate");
+      } else if (uv >= 6 && uv <= 8) {
+        setExposureLevel("High");
+      } else if (uv >= 9 && uv <= 10) {
+        setExposureLevel("Very High");
+      } else if (uv >= 11) {
+        setExposureLevel("Extreme");
+      }
     }
   };
 

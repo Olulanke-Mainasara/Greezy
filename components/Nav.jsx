@@ -6,7 +6,7 @@ const Nav = () => {
   return (
     <nav className="background xl:border xl:h-full xl:w-[8%] z-10 xl:rounded-3xl flex xl:flex-col xl:justify-between items-center xl:py-8 xl:shadow-2xl fixed bottom-0 left-0 xl:static w-screen border-t border-white h-[8%] xs:justify-between">
       <Link
-        href="#"
+        href={"/"}
         className="items-center hidden text-5xl text-white duration-300 xl:flex xs:text-4xl xl:hover:text-black hover:text-white"
       >
         G<FaWind />

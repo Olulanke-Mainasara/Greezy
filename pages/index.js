@@ -23,7 +23,7 @@ export default function Home() {
   };
 
   useEffect(() => {
-    const timeoutId = setTimeout(() => setSplashed("true"), 6000);
+    const timeoutId = setTimeout(() => setSplashed("true"), 5500);
 
     if (!navigator.geolocation) {
       setSupported(false);

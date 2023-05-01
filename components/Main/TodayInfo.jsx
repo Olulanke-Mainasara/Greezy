@@ -37,7 +37,7 @@ const TodayInfo = () => {
       </h1>
 
       <section className="w-full h-full overflow-scroll shadow-2xl rounded-3xl hideScroll background">
-        <section className="flex h-48 xl:h-full w-fit">
+        <section className="flex h-48 gap-4 pl-4 xl:h-full w-fit">
           {timeStamps.map((time, index) => {
             const splitDate = timeStamps[index].split("T");
             const furtherSplitDate = splitDate[0].split("-");
@@ -63,15 +63,22 @@ const TodayInfo = () => {
                 className="flex flex-col items-center justify-around w-32 h-full text-white"
               >
                 <h1 className="text-lg">
-                  {furtherSplitTime[0] == accurateDate.getHours() &&
+                  {(furtherSplitTime[0] == accurateDate.getHours() &&
                   furtherSplitDate[2] == accurateDate.getDate()
                     ? "Now"
-                    : splitDate[1]}
+                    : splitDate[1]) +
+                    (furtherSplitTime[0] > 11 &&
+                    furtherSplitTime[0] != accurateDate.getHours()
+                      ? "PM"
+                      : furtherSplitTime[0] <= 11 &&
+                        furtherSplitTime[0] != accurateDate.getHours()
+                      ? "AM"
+                      : "")}
                 </h1>
                 <h1 className="text-xl text-center">
                   {gettingCurrentConditions(weatherCode[index])}
                 </h1>
-                <h1 className="text-2xl ">{hourWeather[index]}</h1>
+                <h1 className="text-2xl ">{hourWeather[index] + "°C"}</h1>
               </div>
             );
           })}
