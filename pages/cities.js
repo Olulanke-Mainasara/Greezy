@@ -67,7 +67,7 @@ const Cities = () => {
                 <h1 className="text-2xl text-white">No searches...</h1>
               </div>
             ) : (loading == false) & (searchResults.length > 0) ? (
-              <div className="grid grid-cols-1 gap-10 xl:gap-y-14 md:grid-cols-3 grow">
+              <div className="grid grid-cols-1 gap-10 xl:gap-y-14 md:grid-cols-3 grow xl:grow-0">
                 {searchResults.map((result) => (
                   <CityResult key={Math.random() * 10000} result={result} />
                 ))}

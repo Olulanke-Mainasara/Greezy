@@ -9,7 +9,7 @@ const DayForecast = () => {
   const [supported, setSupported] = useState(true);
   const [location, setLocation] = useState(null);
   const [confirmed, setConfirmed] = useLocalStorage("confirmed");
-  const [askUser, setAskUser] = useState(true);
+  const [askUser, setAskUser] = useState(null);
   const queryClient = useQueryClient();
   const dayForecast = queryClient.getQueryData("weatherInfo");
   const router = useRouter();
@@ -27,6 +27,8 @@ const DayForecast = () => {
     if (!navigator.geolocation) {
       setSupported(false);
     }
+
+    setAskUser(true);
 
     if (confirmed === "true") {
       if (!dayForecast) {
@@ -153,7 +155,7 @@ const DayForecast = () => {
   const maxTemp = dayForecast.daily.temperature_2m_max;
 
   return (
-    <section className="xl:w-[30%] h-full rounded-3xl flex flex-col gap-6 p-5 sm:p-7 shadow-2xl text-white background mb-[24%] sm:mb-[14%] xl:mb-0">
+    <section className="xl:w-[30%] h-full rounded-3xl flex flex-col p-5 sm:p-7 shadow-2xl text-white background mb-[24%] sm:mb-[14%] xl:mb-0">
       <h1 className="text-3xl text-center">Your 7-day forecast</h1>
 
       <section
@@ -162,8 +164,8 @@ const DayForecast = () => {
       >
         <div className="flex items-center justify-between w-full xl:h-[20%] h-20">
           <h1>Date</h1>
-          <h1>Weather condition</h1>
-          <h1>min-max</h1>
+          <h1>condition</h1>
+          <h1>min-max(temp)</h1>
         </div>
         {dates.map((date, index) => {
           const splitDate = date.split("-");

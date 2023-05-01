@@ -5,24 +5,29 @@ const UvInfo = () => {
   const [exposureLevel, setExposureLevel] = useState(null);
 
   const getUvInfo = async () => {
-    let myHeaders = new Headers();
-    myHeaders.append("x-access-token", process.env.NEXT_PUBLIC_UV_API_KEY);
-    myHeaders.append("Content-Type", "application/json");
+    try {
+      let myHeaders = new Headers();
+      myHeaders.append("x-access-token", process.env.NEXT_PUBLIC_UV_API_KEY);
+      myHeaders.append("Content-Type", "application/json");
 
-    let requestOptions = {
-      method: "GET",
-      headers: myHeaders,
-      redirect: "follow",
-    };
+      let requestOptions = {
+        method: "GET",
+        headers: myHeaders,
+        redirect: "follow",
+      };
 
-    const rawData = await fetch(
-      "https://api.openuv.io/api/v1/uv?lat=6.62&lng=3.38&alt=100",
-      requestOptions
-    );
-    const jsonData = await rawData.json();
-    const uv = jsonData.result.uv;
+      const rawData = await fetch(
+        "https://api.openuv.io/api/v1/uv?lat=6.62&lng=3.38&alt=100",
+        requestOptions
+      );
+      const jsonData = await rawData.json();
+      const uv = jsonData.result.uv;
 
-    setUvIndex(Math.round(uv));
+      setUvIndex(Math.round(uv));
+    } catch (error) {
+      console.log(error.message);
+    }
+    
   };
 
   const getExposureLevel = (uv) => {
@@ -40,7 +45,6 @@ const UvInfo = () => {
       setExposureLevel("Extreme");
     }
   };
-
 
   useEffect(() => {
     getUvInfo();

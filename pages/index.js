@@ -5,7 +5,7 @@ import Head from "next/head";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useQuery } from "react-query";
-import { useLocalStorage } from "react-use";
+import { useLocalStorage, useSessionStorage } from "react-use";
 import { useQueryClient } from "react-query";
 import Splash from "@/components/Splash-Screen/Splash";
 
@@ -13,7 +13,8 @@ export default function Home() {
   const [supported, setSupported] = useState(true);
   const [location, setLocation] = useState(null);
   const [confirmed, setConfirmed] = useLocalStorage("confirmed");
-  const [askUser, setAskUser] = useState(true);
+  const [splashed, setSplashed] = useSessionStorage("splashed");
+  const [askUser, setAskUser] = useState(null);
   const queryClient = useQueryClient();
   const weatherInfo = queryClient.getQueryData("weatherInfo");
 
@@ -22,9 +23,13 @@ export default function Home() {
   };
 
   useEffect(() => {
+    const timeoutId = setTimeout(() => setSplashed("true"), 6000);
+
     if (!navigator.geolocation) {
       setSupported(false);
     }
+
+    setAskUser(true);
 
     if (confirmed === "true") {
       if (!weatherInfo) {
@@ -40,7 +45,18 @@ export default function Home() {
 
       setAskUser(false);
     }
-  }, [confirmed, weatherInfo]);
+
+    window.addEventListener("beforeunload", () => {
+      setSplashed("");
+    });
+
+    return () => {
+      clearTimeout(timeoutId);
+      window.removeEventListener("beforeunload", () => {
+        setSplashed("");
+      });
+    };
+  }, [confirmed, setSplashed, weatherInfo]);
 
   async function fetchData(location) {
     const rawData = await fetch(
@@ -50,14 +66,10 @@ export default function Home() {
     return jsonData;
   }
 
-  const { isLoading, isError } = useQuery(
-    "weatherInfo",
-    () => fetchData(location),
-    {
-      enabled: !!location,
-      staleTime: 120000,
-    }
-  );
+  const { isError } = useQuery("weatherInfo", () => fetchData(location), {
+    enabled: !!location,
+    staleTime: 120000,
+  });
 
   if (!supported) {
     return (
@@ -85,16 +97,6 @@ export default function Home() {
             Reload
           </button>
         </div>
-      </div>
-    );
-  }
-
-  if (isLoading) {
-    return (
-      <div className="absolute top-0 left-0 z-20 flex items-center justify-center w-full h-full text-white backdrop-brightness-[25%]">
-        <h1 className="text-2xl text-center md:text-3xl">
-          Getting weather information...
-        </h1>
       </div>
     );
   }
@@ -130,10 +132,10 @@ export default function Home() {
         className={`bg-[#262626] ${askUser ? "overflow-hidden h-screen" : ""}`}
       >
         <div className="flex flex-col w-full min-h-[100dvh] xl:h-screen gap-12 p-4 xl:flex-row xl:gap-8">
-          <Splash />
           <Nav />
           <Main />
           <DayForecast />
+          {splashed !== "true" ? <Splash /> : null}
         </div>
       </main>
 
