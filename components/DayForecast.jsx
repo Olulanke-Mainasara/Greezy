@@ -15,6 +15,10 @@ const DayForecast = () => {
   const router = useRouter();
   const currentPath = router.pathname;
 
+  const cancelConfirmed = () => {
+    setConfirmed("");
+  };
+
   const handleLocationClick = () => {
     setConfirmed("true");
   };
@@ -38,6 +42,8 @@ const DayForecast = () => {
 
       setAskUser(false);
     }
+
+    setSupported(true);
   }, [confirmed, dayForecast]);
 
   async function fetchData(location) {
@@ -69,12 +75,20 @@ const DayForecast = () => {
           If after confirming all these, it still doesn&apos;t work, then
           geolocation is NOT supported by the browser you are currently using.
         </p>
-        <button
-          className="px-8 py-2 text-black duration-300 bg-white rounded-lg hover:bg-black hover:text-white"
-          onClick={() => window.location.reload()}
-        >
-          Reload
-        </button>
+        <div className="flex gap-6">
+          <button
+            className="px-8 py-2 text-black duration-300 bg-white border rounded-lg hover:bg-black hover:text-white"
+            onClick={() => cancelConfirmed()}
+          >
+            Cancel
+          </button>
+          <button
+            className="px-8 py-2 text-black duration-300 bg-white rounded-lg hover:bg-black hover:text-white"
+            onClick={() => window.location.reload()}
+          >
+            Reload
+          </button>
+        </div>
       </div>
     );
   }
@@ -146,12 +160,8 @@ const DayForecast = () => {
         id="dayForecasts2"
         className="flex flex-col w-full h-full overflow-hidden"
       >
-        <div
-          className="flex items-center justify-between w-full xl:h-[20%] h-20"
-        >
-          <h1>
-            Date
-          </h1>
+        <div className="flex items-center justify-between w-full xl:h-[20%] h-20">
+          <h1>Date</h1>
           <h1>Weather condition</h1>
           <h1>min-max</h1>
         </div>

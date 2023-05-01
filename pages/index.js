@@ -7,6 +7,7 @@ import { useEffect, useState } from "react";
 import { useQuery } from "react-query";
 import { useLocalStorage } from "react-use";
 import { useQueryClient } from "react-query";
+import Splash from "@/components/Splash-Screen/Splash";
 
 export default function Home() {
   const [supported, setSupported] = useState(true);
@@ -70,12 +71,20 @@ export default function Home() {
           If after confirming all these, it still doesn&apos;t work, then
           geolocation is NOT supported by the browser you are currently using.
         </p>
-        <button
-          className="px-8 py-2 text-black duration-300 bg-white rounded-lg hover:bg-black hover:text-white"
-          onClick={() => window.location.reload()}
-        >
-          Reload
-        </button>
+        <div className="flex gap-6">
+          <Link
+            href={"/cities"}
+            className="px-8 py-2 text-black duration-300 bg-white border rounded-lg hover:bg-black hover:text-white"
+          >
+            Search for cities
+          </Link>
+          <button
+            className="px-8 py-2 text-black duration-300 bg-white border rounded-lg hover:bg-black hover:text-white"
+            onClick={() => window.location.reload()}
+          >
+            Reload
+          </button>
+        </div>
       </div>
     );
   }
@@ -100,7 +109,7 @@ export default function Home() {
           resolution of the error.
         </p>
         <button
-          className="px-8 py-2 text-black duration-300 bg-white rounded-lg hover:bg-black hover:text-white"
+          className="px-8 py-2 text-black duration-300 bg-white border rounded-lg hover:bg-black hover:text-white"
           onClick={() => window.location.reload()}
         >
           Reload
@@ -121,6 +130,7 @@ export default function Home() {
         className={`bg-[#262626] ${askUser ? "overflow-hidden h-screen" : ""}`}
       >
         <div className="flex flex-col w-full min-h-[100dvh] xl:h-screen gap-12 p-4 xl:flex-row xl:gap-8">
+          <Splash />
           <Nav />
           <Main />
           <DayForecast />
