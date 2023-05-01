@@ -27,7 +27,6 @@ const UvInfo = () => {
     } catch (error) {
       console.log(error.message);
     }
-    
   };
 
   const getExposureLevel = (uv) => {
