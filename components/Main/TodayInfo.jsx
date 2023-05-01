@@ -37,7 +37,7 @@ const TodayInfo = () => {
       </h1>
 
       <section className="w-full h-full overflow-scroll shadow-2xl rounded-3xl hideScroll background">
-        <section className="flex h-48 gap-4 pl-4 xl:h-full w-fit">
+        <section className="flex h-48 gap-4 px-4 xl:h-full w-fit">
           {timeStamps.map((time, index) => {
             const splitDate = timeStamps[index].split("T");
             const furtherSplitDate = splitDate[0].split("-");
