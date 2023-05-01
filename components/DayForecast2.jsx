@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { useRouter } from "next/router";
 import { useQuery } from "react-query";
 import { useQueryClient } from "react-query";
 import gettingCurrentConditions from "@/utils/getCurrentConditions";
@@ -13,9 +12,7 @@ const DayForecast2 = () => {
   const [askUser, setAskUser] = useState(null);
   const queryClient = useQueryClient();
   const dayForecast = queryClient.getQueryData("weatherInfo");
-  const router = useRouter();
-  const currentPath = router.pathname;
-
+  
   const cancelConfirmed = () => {
     setConfirmed("");
   };
@@ -27,7 +24,7 @@ const DayForecast2 = () => {
 
   const handleLocationClick = () => {
     setConfirmed("true");
-    setError(null)
+    setError(null);
   };
 
   useEffect(() => {
@@ -158,9 +155,7 @@ const DayForecast2 = () => {
         >
           <h1 className="text-2xl">No weather info available</h1>
           <button
-            className={`px-8 py-2 text-black duration-300 bg-white rounded-lg ${
-              currentPath === "/" ? "xl:hidden" : ""
-            } hover:bg-black hover:text-white`}
+            className="px-8 py-2 text-black duration-300 bg-white rounded-lg hover:bg-black hover:text-white"
             onClick={handleLocationClick}
           >
             Allow location access
