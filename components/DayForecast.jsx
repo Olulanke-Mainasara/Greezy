@@ -1,130 +1,12 @@
-import React, { useState, useEffect } from "react";
-import { useRouter } from "next/router";
-import { useQuery } from "react-query";
+import React from "react";
 import { useQueryClient } from "react-query";
 import gettingCurrentConditions from "@/utils/getCurrentConditions";
-import { useLocalStorage } from "react-use";
 
 const DayForecast = () => {
-  const [supported, setSupported] = useState(true);
-  const [location, setLocation] = useState(null);
-  const [confirmed, setConfirmed] = useLocalStorage("confirmed");
-  const [askUser, setAskUser] = useState(null);
   const queryClient = useQueryClient();
   const dayForecast = queryClient.getQueryData("weatherInfo");
-  const router = useRouter();
-  const currentPath = router.pathname;
 
-  const cancelConfirmed = () => {
-    setConfirmed("");
-  };
-
-  const handleLocationClick = () => {
-    setConfirmed("true");
-  };
-
-  useEffect(() => {
-    if (!navigator.geolocation) {
-      setSupported(false);
-    }
-
-    setAskUser(true);
-
-    if (confirmed === "true") {
-      if (!dayForecast) {
-        navigator.geolocation.getCurrentPosition(
-          (position) => {
-            setLocation(position.coords);
-          },
-          (error) => {
-            setSupported(false);
-          }
-        );
-      }
-
-      setAskUser(false);
-    }
-
-    setSupported(true);
-  }, [confirmed, dayForecast]);
-
-  async function fetchData(location) {
-    const rawData = await fetch(
-      `https://api.open-meteo.com/v1/forecast?latitude=${location.latitude}&longitude=${location.longitude}&hourly=temperature_2m,relativehumidity_2m,apparent_temperature,weathercode,pressure_msl,visibility,windspeed_80m,winddirection_80m&models=best_match&daily=weathercode,temperature_2m_max,temperature_2m_min,sunrise,sunset&current_weather=true&windspeed_unit=ms&timezone=auto`
-    );
-    const jsonData = rawData.json();
-    return jsonData;
-  }
-
-  const { isLoading, isError } = useQuery(
-    "weatherInfo",
-    () => fetchData(location),
-    {
-      enabled: !!location,
-      staleTime: 600000,
-    }
-  );
-
-  if (!supported) {
-    return (
-      <div className="absolute top-0 left-0 z-20 flex flex-col gap-6 items-center justify-center w-full h-full text-white backdrop-brightness-[25%]">
-        <h1 className="text-2xl text-center md:text-4xl">
-          Geolocation is not active / supported
-        </h1>
-        <p className="text-center w-[95%] max-w-lg">
-          Please check your settings and allow location access for this website
-          or check your internet connectivity and make sure you are connected.
-          If after confirming all these, it still doesn&apos;t work, then
-          geolocation is NOT supported by the browser you are currently using.
-        </p>
-        <div className="flex gap-6">
-          <button
-            className="px-8 py-2 text-black duration-300 bg-white border rounded-lg hover:bg-black hover:text-white"
-            onClick={() => cancelConfirmed()}
-          >
-            Cancel
-          </button>
-          <button
-            className="px-8 py-2 text-black duration-300 bg-white rounded-lg hover:bg-black hover:text-white"
-            onClick={() => window.location.reload()}
-          >
-            Reload
-          </button>
-        </div>
-      </div>
-    );
-  }
-
-  if (isLoading) {
-    return (
-      <div className="absolute top-0 left-0 z-20 flex items-center justify-center w-full h-full text-white backdrop-brightness-[25%]">
-        <h1 className="text-2xl text-center md:text-3xl">
-          Getting weather information...
-        </h1>
-      </div>
-    );
-  }
-
-  if (isError) {
-    return (
-      <div className="absolute top-0 left-0 z-20 flex flex-col gap-6 items-center justify-center w-full h-full text-white backdrop-brightness-[25%]">
-        <h1 className="text-2xl text-center md:text-3xl">An error occurred</h1>
-        <p className="text-center w-[95%] max-w-sm">
-          A server error occurred, try reloading the browser and if the error
-          persists, please contact the my developers for more info and a
-          possible resolution of the error.
-        </p>
-        <button
-          className="px-8 py-2 text-black duration-300 bg-white rounded-lg hover:bg-black hover:text-white"
-          onClick={() => window.location.reload()}
-        >
-          Reload
-        </button>
-      </div>
-    );
-  }
-
-  if (askUser || dayForecast == undefined) {
+  if (!dayForecast) {
     return (
       <section className="xl:w-[30%] h-full rounded-3xl flex flex-col gap-6 px-7 py-7 shadow-2xl text-white background mb-[24%] sm:mb-[14%] xl:mb-0">
         <h1 className="text-3xl text-center">Your 7-day forecast</h1>
@@ -134,14 +16,6 @@ const DayForecast = () => {
           className="flex flex-col items-center justify-center w-full h-full gap-6 overflow-hidden"
         >
           <h1 className="text-2xl">No weather info available</h1>
-          <button
-            className={`px-8 py-2 text-black duration-300 bg-white rounded-lg ${
-              currentPath === "/" ? "xl:hidden" : ""
-            } hover:bg-black hover:text-white`}
-            onClick={handleLocationClick}
-          >
-            Allow location access
-          </button>
         </section>
       </section>
     );

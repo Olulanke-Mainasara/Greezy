@@ -1,6 +1,6 @@
 import Link from "next/link";
 import React from "react";
-import { FaCity, FaCloud, FaWind } from "react-icons/fa";
+import { FaCity, FaCloud, FaSearch, FaWind } from "react-icons/fa";
 
 const Nav = () => {
   return (
@@ -29,7 +29,7 @@ const Nav = () => {
             title="Cities"
             className="xl:w-[51px] xl:h-[51px] xl:rounded-full xl:hover:bg-black duration-500 flex items-center justify-center w-auto h-auto hover:bg-transparent"
           >
-            <FaCity className="text-2xl" />
+            <FaSearch className="text-2xl" />
           </Link>
         </li>
 
