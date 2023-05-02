@@ -28,7 +28,7 @@ const TodayInfo = () => {
   const weatherCode = todayForecast.hourly.weathercode;
 
   return (
-    <section className="flex flex-col w-full space-y-6 overflow-hidden xl:space-y-0 xl:gap-6 h-fit xl:h-auto">
+    <section className="flex flex-col w-full space-y-6 overflow-hidden shadow-lg xl:space-y-0 xl:gap-6 h-fit xl:h-auto rounded-b-3xl">
       <h1 className="flex items-center justify-between gap-4 text-3xl">
         Today&apos;s Forecast
         <span className="flex items-center gap-2 text-base">
@@ -36,8 +36,8 @@ const TodayInfo = () => {
         </span>
       </h1>
 
-      <section className="w-full h-full overflow-scroll shadow-2xl rounded-3xl hideScroll background">
-        <section className="flex h-48 gap-4 px-4 xl:h-full w-fit">
+      <section className="w-full h-full overflow-scroll rounded-3xl hideScroll background">
+        <section className="flex h-48 gap-4 px-4 shadow-2xl xl:h-full w-fit">
           {timeStamps.map((time, index) => {
             const splitDate = timeStamps[index].split("T");
             const furtherSplitDate = splitDate[0].split("-");

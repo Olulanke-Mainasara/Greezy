@@ -106,7 +106,11 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main
-        className={`bg-[#262626] ${askUser ? "overflow-hidden h-screen" : ""}`}
+        className={`bg-[#262626] ${
+          askUser || splashed !== "true" || loading || error || !supported
+            ? "overflow-hidden h-screen"
+            : ""
+        }`}
       >
         <div className="flex flex-col w-full min-h-[100dvh] xl:h-screen gap-12 p-4 xl:flex-row xl:gap-8">
           <Nav />

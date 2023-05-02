@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Head from "next/head";
 import Nav from "@/components/Nav";
-import DayForecast from "@/components/DayForecast2";
+import DayForecast2 from "@/components/DayForecast2";
 import { FaSearch } from "react-icons/fa";
 import CityResult from "@/components/CityResult";
 import getCities from "./api/getCities";
@@ -70,7 +70,7 @@ const Cities = () => {
             )}
           </section>
 
-          <DayForecast />
+          <DayForecast2 />
         </div>
       </main>
     </>

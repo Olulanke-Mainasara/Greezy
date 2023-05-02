@@ -1,12 +1,25 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
+import { useQuery, useQueryClient } from "react-query";
+import { useLocalStorage } from "react-use";
 
 const UvInfo = () => {
-  const [uvIndex, setUvIndex] = useState(null);
-  const [exposureLevel, setExposureLevel] = useState(null);
+  const [location, setLocation] = useState(null);
+  const [confirmed] = useLocalStorage("confirmed");
+  const queryClient = useQueryClient();
+  const uvInfo = queryClient.getQueryData("uvInfo");
 
-  const getUvInfo = async () => {
+  useEffect(() => {
+    if (confirmed === "true") {
+      if (!uvInfo) {
+        navigator.geolocation.getCurrentPosition((position) => {
+          setLocation(position.coords);
+        });
+      }
+    }
+  });
+
+  const getUvInfo = async (l) => {
     try {
-      setExposureLevel("Loading...")
       let myHeaders = new Headers();
       myHeaders.append("x-access-token", process.env.NEXT_PUBLIC_UV_API_KEY);
       myHeaders.append("Content-Type", "application/json");
@@ -18,50 +31,84 @@ const UvInfo = () => {
       };
 
       const rawData = await fetch(
-        "https://api.openuv.io/api/v1/uv?lat=6.62&lng=3.38&alt=100",
+        `https://api.openuv.io/api/v1/uv?lat=${l.latitude}&lng=${l.longitude}&alt=100`,
         requestOptions
       );
       const jsonData = await rawData.json();
-      const uv = jsonData.result.uv;
+      const uvNumber = Math.round(jsonData.result.uv);
 
-      setUvIndex(Math.round(uv));
-    } catch (error) {
-      setExposureLevel("API quota 😔");
-    }
-  };
-
-  const getExposureLevel = (uv) => {
-    if (uv !== null) {
-      if (uv <= 2) {
-        setExposureLevel("Low");
-      } else if (uv >= 3 && uv <= 5) {
-        setExposureLevel("Moderate");
-      } else if (uv >= 6 && uv <= 8) {
-        setExposureLevel("High");
-      } else if (uv >= 9 && uv <= 10) {
-        setExposureLevel("Very High");
-      } else if (uv >= 11) {
-        setExposureLevel("Extreme");
+      let uvText = null;
+      if (uvNumber <= 2) {
+        uvText = "Low";
+      } else if (uvNumber >= 3 && uvNumber <= 5) {
+        uvText = "Moderate";
+      } else if (uvNumber >= 6 && uvNumber <= 8) {
+        uvText = "High";
+      } else if (uvNumber >= 9 && uvNumber <= 10) {
+        uvText = "Very high";
+      } else if (uvNumber >= 11) {
+        uvText = "Extreme";
       }
+
+      return { uvNumber: uvNumber, uvText: uvText };
+    } catch (error) {
+      console.log(error.message);
+      return { uvNumber: "- -", uvText: "API quota 😔" };
     }
+
+    return uvInfo;
   };
 
-  useEffect(() => {
-    getUvInfo();
-    getExposureLevel(uvIndex);
-  }, [uvIndex]);
-
-  return (
-    <section className="flex flex-col items-center border shadow-2xl rounded-3xl justify-evenly md:h-48 h-44 xl:h-full">
-      <h1 className="text-xl">U.V Index</h1>
-      <h1 id="uvIndex" className="text-5xl sm:text-7xl">
-        {uvIndex === null ? "- -" : uvIndex}
-      </h1>
-      <h1 id="exposureLevel" className="text-xl">
-        {exposureLevel}
-      </h1>
-    </section>
+  const { isError, isLoading, data } = useQuery(
+    "uvInfo",
+    () => getUvInfo(location),
+    {
+      enabled: !!location,
+      staleTime: 300000,
+    }
   );
+
+  if (isLoading) {
+    return (
+      <section className="flex flex-col items-center border shadow-2xl rounded-3xl justify-evenly md:h-48 h-44 xl:h-full">
+        <h1 className="text-xl">U.V Index</h1>
+        <h1 id="uvIndex" className="text-5xl sm:text-7xl">
+          - -
+        </h1>
+        <h1 id="exposureLevel" className="text-xl">
+          Loading...
+        </h1>
+      </section>
+    );
+  }
+
+  if (isError) {
+    return (
+      <section className="flex flex-col items-center border shadow-2xl rounded-3xl justify-evenly md:h-48 h-44 xl:h-full">
+        <h1 className="text-xl">U.V Index</h1>
+        <h1 id="uvIndex" className="text-5xl sm:text-7xl">
+          - -
+        </h1>
+        <h1 id="exposureLevel" className="text-xl">
+          Server error
+        </h1>
+      </section>
+    );
+  }
+
+  if (data) {
+    return (
+      <section className="flex flex-col items-center border shadow-2xl rounded-3xl justify-evenly md:h-48 h-44 xl:h-full">
+        <h1 className="text-xl">U.V Index</h1>
+        <h1 id="uvIndex" className="text-5xl sm:text-7xl">
+          {data.uvNumber}
+        </h1>
+        <h1 id="exposureLevel" className="text-xl">
+          {data.uvText}
+        </h1>
+      </section>
+    );
+  }
 };
 
 export default UvInfo;
