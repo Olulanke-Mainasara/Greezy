@@ -3,6 +3,7 @@ import { useQuery } from "react-query";
 import { useQueryClient } from "react-query";
 import gettingCurrentConditions from "@/utils/getCurrentConditions";
 import { useLocalStorage } from "react-use";
+import Loading from "react-loading";
 
 const DayForecast2 = () => {
   const [supported, setSupported] = useState(true);
@@ -12,7 +13,7 @@ const DayForecast2 = () => {
   const [askUser, setAskUser] = useState(null);
   const queryClient = useQueryClient();
   const dayForecast = queryClient.getQueryData("weatherInfo");
-  
+
   const cancelConfirmed = () => {
     setConfirmed("");
   };
@@ -81,7 +82,7 @@ const DayForecast2 = () => {
           If after confirming all these, it still doesn&apos;t work, then
           geolocation is NOT supported by the browser you are currently using.
         </p>
-        <div className="flex gap-6">
+        <div className="flex gap-6 xs:flex-col">
           <button
             className="px-8 py-2 text-black duration-300 bg-white border rounded-lg hover:bg-black hover:text-white"
             onClick={() => cancelConfirmed()}
@@ -102,8 +103,9 @@ const DayForecast2 = () => {
   if (isLoading) {
     return (
       <div className="absolute top-0 left-0 z-20 flex items-center justify-center w-full h-full text-white backdrop-brightness-[10%]">
-        <h1 className="text-2xl text-center md:text-3xl">
-          Getting weather information...
+        <h1 className="flex items-center justify-center gap-2 text-2xl text-center md:text-3xl xs:flex-col">
+          Getting weather information
+          <Loading type="spinningBubbles" color="#fff" height={50} width={50} />
         </h1>
       </div>
     );
@@ -119,7 +121,7 @@ const DayForecast2 = () => {
           the error persists, please contact my developers for more info and a
           possible resolution of the error.
         </p>
-        <div className="flex gap-6">
+        <div className="flex gap-6 xs:flex-col">
           <button
             className="px-8 py-2 text-black duration-300 bg-white border rounded-lg hover:bg-black hover:text-white"
             onClick={() => cancelError()}
@@ -153,9 +155,9 @@ const DayForecast2 = () => {
           id="dayForecasts2"
           className="flex flex-col items-center justify-center w-full h-full gap-6 overflow-hidden"
         >
-          <h1 className="text-2xl">No weather info available</h1>
+          <h1 className="text-2xl text-center">No weather info available</h1>
           <button
-            className="px-8 py-2 text-black duration-300 bg-white rounded-lg hover:bg-black hover:text-white"
+            className="px-8 py-2 text-black duration-300 bg-white rounded-lg xs:px-4 hover:bg-black hover:text-white"
             onClick={handleLocationClick}
           >
             Allow location access

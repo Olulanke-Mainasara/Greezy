@@ -13,7 +13,7 @@ const QuickInfo = () => {
   if (!weatherData) {
     return (
       <section className="grid w-full grid-cols-2 gap-6 text-white xs:grid-cols-1 xl:grid-cols-3">
-        <section className="flex flex-col items-center col-span-2 border shadow-2xl rounded-3xl justify-evenly md:h-48 h-44 xl:h-full md:col-span-1">
+        <section className="flex flex-col items-center col-span-2 border shadow-2xl rounded-3xl justify-evenly md:h-48 h-44 xl:h-full md:col-span-1 xs:col-span-1">
           <h1 id="currentLocation" className="flex items-center gap-2 text-xl">
             <FaMapMarkerAlt /> - -
           </h1>

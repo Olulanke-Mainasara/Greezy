@@ -8,6 +8,7 @@ import { useQuery } from "react-query";
 import { useLocalStorage, useSessionStorage } from "react-use";
 import { useQueryClient } from "react-query";
 import Splash from "@/components/Splash-Screen/Splash";
+import Loading from "react-loading";
 
 export default function Home() {
   const [supported, setSupported] = useState(true);
@@ -112,7 +113,7 @@ export default function Home() {
             : ""
         }`}
       >
-        <div className="flex flex-col w-full min-h-[100dvh] xl:h-screen gap-12 p-4 xl:flex-row xl:gap-8">
+        <div className="flex flex-col w-full min-h-[100dvh] xl:h-screen gap-12 p-4 pt-8 xl:pt-4 xl:flex-row xl:gap-8">
           <Nav />
           <Main />
           <DayForecast />
@@ -133,7 +134,7 @@ export default function Home() {
             work, then geolocation is NOT supported by the browser you are
             currently using.
           </p>
-          <div className="flex gap-6">
+          <div className="flex gap-6 xs:flex-col">
             <Link
               href={"/cities"}
               className="px-8 py-2 text-black duration-300 bg-white border rounded-lg hover:bg-black hover:text-white"
@@ -178,8 +179,14 @@ export default function Home() {
 
       {loading && (
         <div className="absolute top-0 left-0 z-20 flex items-center justify-center w-full h-full text-white backdrop-brightness-[10%]">
-          <h1 className="text-2xl text-center md:text-3xl">
-            Getting weather information...
+          <h1 className="flex items-center justify-center gap-2 text-2xl text-center xs:flex-col md:text-3xl">
+            Getting weather information
+            <Loading
+              type="spinningBubbles"
+              color="#fff"
+              height={50}
+              width={50}
+            />
           </h1>
         </div>
       )}
@@ -195,7 +202,7 @@ export default function Home() {
             the error persists, please contact my developers for more info and a
             possible resolution of the error.
           </p>
-          <div className="flex gap-6">
+          <div className="flex gap-6 xs:flex-col">
             <Link
               href={"/cities"}
               className="px-8 py-2 text-black duration-300 bg-white border rounded-lg hover:bg-black hover:text-white"
