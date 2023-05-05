@@ -1,9 +1,11 @@
-import React, { useState } from "react";
 import Head from "next/head";
-import Nav from "@/components/Nav";
-import DayForecast2 from "@/components/DayForecast2";
-import { FaSearch } from "react-icons/fa";
+
 import CityResult from "@/components/CityResult";
+import DayForecast2 from "@/components/DayForecast2";
+import Nav from "@/components/Nav";
+import React, { useState } from "react";
+import { FaSearch } from "react-icons/fa";
+
 import getCities from "./api/getCities";
 
 const Cities = () => {

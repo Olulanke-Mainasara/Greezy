@@ -1,7 +1,7 @@
-import React from "react";
-import { useQueryClient } from "react-query";
 import gettingCurrentConditions from "@/utils/getCurrentConditions";
+import React from "react";
 import { FaArrowRight } from "react-icons/fa";
+import { useQueryClient } from "react-query";
 
 const TodayInfo = () => {
   const queryClient = useQueryClient();

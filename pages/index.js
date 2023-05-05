@@ -1,14 +1,15 @@
-import Main from "@/components/Main/Main";
-import Nav from "@/components/Nav";
-import DayForecast from "@/components/DayForecast";
 import Head from "next/head";
 import Link from "next/link";
-import { useEffect, useState } from "react";
-import { useQuery } from "react-query";
-import { useLocalStorage, useSessionStorage } from "react-use";
-import { useQueryClient } from "react-query";
+
+import DayForecast from "@/components/DayForecast";
+import Main from "@/components/Main/Main";
+import Nav from "@/components/Nav";
 import Splash from "@/components/Splash-Screen/Splash";
+import { useEffect, useState } from "react";
 import Loading from "react-loading";
+import { useQuery } from "react-query";
+import { useQueryClient } from "react-query";
+import { useLocalStorage, useSessionStorage } from "react-use";
 
 export default function Home() {
   const [supported, setSupported] = useState(true);

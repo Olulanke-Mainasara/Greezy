@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from "react";
+import gettingCurrentConditions from "@/utils/getCurrentConditions";
+import React, { useEffect, useState } from "react";
+import Loading from "react-loading";
 import { useQuery } from "react-query";
 import { useQueryClient } from "react-query";
-import gettingCurrentConditions from "@/utils/getCurrentConditions";
 import { useLocalStorage } from "react-use";
-import Loading from "react-loading";
 
 const DayForecast2 = () => {
   const [supported, setSupported] = useState(true);

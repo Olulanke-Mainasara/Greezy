@@ -1,7 +1,8 @@
-import React from "react";
-import { useQueryClient } from "react-query";
 import gettingCurrentConditions from "@/utils/getCurrentConditions";
+import React from "react";
 import { FaMapMarkerAlt, FaSun, FaWind } from "react-icons/fa";
+import { useQueryClient } from "react-query";
+
 import UvInfo from "./UvInfo";
 
 const QuickInfo = () => {

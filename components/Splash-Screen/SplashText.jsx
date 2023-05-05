@@ -1,5 +1,5 @@
-import React from "react";
 import { motion } from "framer-motion";
+import React from "react";
 import { FaWind } from "react-icons/fa";
 
 function SplashText() {

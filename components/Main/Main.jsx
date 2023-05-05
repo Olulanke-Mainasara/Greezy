@@ -1,7 +1,8 @@
 import React from "react";
+
+import HourlyInfo from "./HourlyInfo";
 import QuickInfo from "./QuickInfo";
 import TodayInfo from "./TodayInfo";
-import HourlyInfo from "./HourlyInfo";
 
 const Main = () => {
   return (

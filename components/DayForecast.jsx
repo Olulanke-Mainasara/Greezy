@@ -1,6 +1,6 @@
+import gettingCurrentConditions from "@/utils/getCurrentConditions";
 import React from "react";
 import { useQueryClient } from "react-query";
-import gettingCurrentConditions from "@/utils/getCurrentConditions";
 
 const DayForecast = () => {
   const queryClient = useQueryClient();

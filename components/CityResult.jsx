@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
 import gettingCurrentConditions from "@/utils/getCurrentConditions";
+import React, { useEffect, useState } from "react";
 
 const CityResult = ({ result }) => {
   const [cityData, setCityData] = useState(null);
