@@ -1,7 +1,7 @@
 import Link from "next/link";
 
 import React from "react";
-import { FaCloud, FaSearch, FaWind } from "react-icons/fa";
+import { FaCloud, FaMap, FaSearch, FaWind } from "react-icons/fa";
 
 const Nav = () => {
   return (
@@ -21,6 +21,16 @@ const Nav = () => {
             className="xl:w-[51px] xl:h-[51px] xl:rounded-full xl:hover:bg-black duration-500 flex items-center justify-center w-auto h-auto hover:bg-transparent"
           >
             <FaCloud className="text-2xl" />
+          </Link>
+        </li>
+
+        <li>
+          <Link
+            href={"/map"}
+            title="Weather"
+            className="xl:w-[51px] xl:h-[51px] xl:rounded-full xl:hover:bg-black duration-500 flex items-center justify-center w-auto h-auto hover:bg-transparent"
+          >
+            <FaMap className="text-2xl" />
           </Link>
         </li>
 
