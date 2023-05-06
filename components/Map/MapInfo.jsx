@@ -1,10 +1,11 @@
 import "leaflet/dist/leaflet.css";
 import React, { useEffect, useRef, useState } from "react";
 import { MapContainer, TileLayer } from "react-leaflet";
-
+import { useLocalStorage } from "react-use";
 
 const MapInfo = () => {
   const mapRef = useRef(null);
+  const [confirmed, setConfirmed] = useLocalStorage("confirmed");
   const [lat, setLat] = useState(51.505);
   const [lng, setLng] = useState(-0.09);
   const [zoom, setZoom] = useState(13);

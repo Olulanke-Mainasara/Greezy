@@ -13,11 +13,11 @@ const Map = () => {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <main className="flex items-center w-screen h-screen gap-8 bg-[#262626] p-4">
+      <main className="flex items-center w-screen h-screen gap-8 bg-[#262626] xl:p-4 pb-[58px] xl:pb-4">
         <Nav />
-        <div className="h-full overflow-hidden grow">
+        <section className="h-full overflow-hidden border xl:rounded-3xl grow">
           <MapInfo />
-        </div>
+        </section>
       </main>
     </>
   );

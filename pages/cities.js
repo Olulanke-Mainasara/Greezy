@@ -1,10 +1,11 @@
 import Head from "next/head";
 
-import CityResult from "@/components/CityResult";
-import DayForecast2 from "@/components/DayForecast2";
+import CityResult from "@/components/Cities/CityResult";
+import DayForecast2 from "@/components/Cities/DayForecast2";
 import Nav from "@/components/Nav";
 import React, { useState } from "react";
 import { FaSearch } from "react-icons/fa";
+import Loading from "react-loading";
 
 import getCities from "./api/getCities";
 
@@ -18,6 +19,7 @@ const Cities = () => {
       setLoading(true);
       try {
         const data = await getCities(e);
+        console.log(data);
 
         setSearchResults(data);
         setLoading(false);
@@ -36,9 +38,9 @@ const Cities = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main className="bg-[#262626]">
-        <div className="flex flex-col w-full min-h-[100dvh] xl:h-screen gap-12 p-4 xl:flex-row xl:gap-8">
+        <div className="flex flex-col w-full min-h-[100dvh] xl:h-screen gap-12 p-4 xl:flex-row xl:gap-8 pb-[86px] xl:pb-4">
           <Nav />
-          <section className="flex flex-col p-4 pb-5 space-y-10 grow background rounded-3xl md:p-8 h-fit xl:h-auto">
+          <section className="flex flex-col p-4 pb-5 space-y-10 border grow background rounded-3xl md:p-8 h-fit xl:h-auto">
             <div className="flex items-center w-full gap-4">
               <h1 className="text-4xl text-center text-white xl:text-7xl">
                 Cities
@@ -57,7 +59,9 @@ const Cities = () => {
 
             {(loading == false) & (searchResults.length == 0) ? (
               <div className="flex items-center justify-center p-8 pt-4 grow">
-                <h1 className="text-2xl text-white">No searches...</h1>
+                <h1 className="text-3xl text-white xl:text-5xl">
+                  No searches...
+                </h1>
               </div>
             ) : (loading == false) & (searchResults.length > 0) ? (
               <div className="grid grid-cols-1 gap-10 xl:gap-y-14 md:grid-cols-3 grow md:grow-0">
@@ -67,7 +71,15 @@ const Cities = () => {
               </div>
             ) : (
               <div className="flex items-center justify-center p-8 pt-4 grow">
-                <h1 className="text-3xl text-white">Locating...</h1>
+                <h1 className="flex items-center justify-center gap-2 text-3xl text-white xl:text-5xl">
+                  Locating
+                  <Loading
+                    type="spinningBubbles"
+                    color="#fff"
+                    height={50}
+                    width={50}
+                  />
+                </h1>
               </div>
             )}
           </section>

@@ -90,7 +90,7 @@ const DayForecast2 = () => {
             Cancel
           </button>
           <button
-            className="px-8 py-2 text-black duration-300 bg-white rounded-lg hover:bg-black hover:text-white"
+            className="px-8 py-2 text-black duration-300 bg-white border rounded-lg hover:bg-black hover:text-white"
             onClick={() => window.location.reload()}
           >
             Reload
@@ -129,7 +129,7 @@ const DayForecast2 = () => {
             Cancel
           </button>
           <button
-            className="px-8 py-2 text-black duration-300 bg-white rounded-lg hover:bg-black hover:text-white"
+            className="px-8 py-2 text-black duration-300 bg-white border rounded-lg hover:bg-black hover:text-white"
             onClick={() => window.location.reload()}
           >
             Reload
@@ -148,7 +148,7 @@ const DayForecast2 = () => {
 
   if (askUser || dayForecast == undefined) {
     return (
-      <section className="xl:w-[30%] h-full rounded-3xl flex flex-col gap-6 px-7 py-7 shadow-2xl text-white background mb-[24%] sm:mb-[14%] xl:mb-0">
+      <section className="xl:w-[30%] border h-full rounded-3xl flex flex-col gap-6 px-7 py-7 shadow-2xl text-white background">
         <h1 className="text-3xl text-center">Your 7-day forecast</h1>
 
         <section
@@ -157,7 +157,7 @@ const DayForecast2 = () => {
         >
           <h1 className="text-2xl text-center">No weather info available</h1>
           <button
-            className="px-8 py-2 text-black duration-300 bg-white rounded-lg xs:px-4 hover:bg-black hover:text-white"
+            className="px-8 py-2 text-black duration-300 bg-white border rounded-lg xs:px-4 hover:bg-black hover:text-white"
             onClick={handleLocationClick}
           >
             Allow location access
@@ -175,7 +175,7 @@ const DayForecast2 = () => {
   const maxTemp = dayForecast.daily.temperature_2m_max;
 
   return (
-    <section className="xl:w-[30%] h-full rounded-3xl flex flex-col p-5 sm:p-7 shadow-2xl text-white background mb-[24%] sm:mb-[14%] xl:mb-0">
+    <section className="xl:w-[30%] border h-full rounded-3xl flex flex-col p-5 sm:p-7 shadow-2xl text-white background">
       <h1 className="text-3xl text-center">Your 7-day forecast</h1>
 
       <section

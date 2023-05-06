@@ -1,5 +1,5 @@
 import dynamic from "next/dynamic";
 
-const Map = dynamic(() => import("./MapInfo"), { ssr: false });
+const MapInfo = dynamic(() => import("./MapInfo"), { ssr: false });
 
-export default Map
+export default MapInfo;

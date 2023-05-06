@@ -8,7 +8,7 @@ const DayForecast = () => {
 
   if (!dayForecast) {
     return (
-      <section className="xl:w-[30%] h-full rounded-3xl flex flex-col gap-6 px-7 py-7 shadow-2xl text-white background mb-[24%] sm:mb-[14%] xl:mb-0">
+      <section className="xl:w-[30%] h-full border rounded-3xl flex flex-col gap-6 px-7 py-7 shadow-2xl text-white background">
         <h1 className="text-3xl text-center">Your 7-day forecast</h1>
 
         <section
@@ -29,7 +29,7 @@ const DayForecast = () => {
   const maxTemp = dayForecast.daily.temperature_2m_max;
 
   return (
-    <section className="xl:w-[30%] h-full rounded-3xl flex flex-col p-5 sm:p-7 shadow-2xl text-white background mb-[24%] sm:mb-[14%] xl:mb-0">
+    <section className="xl:w-[30%] border h-full rounded-3xl flex flex-col p-5 sm:p-7 shadow-2xl text-white background">
       <h1 className="text-3xl text-center">Your 7-day forecast</h1>
 
       <section

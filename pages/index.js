@@ -1,7 +1,7 @@
 import Head from "next/head";
 import Link from "next/link";
 
-import DayForecast from "@/components/DayForecast";
+import DayForecast from "@/components/Main/DayForecast";
 import Main from "@/components/Main/Main";
 import Nav from "@/components/Nav";
 import Splash from "@/components/Splash-Screen/Splash";
@@ -114,7 +114,7 @@ export default function Home() {
             : ""
         }`}
       >
-        <div className="flex flex-col w-full min-h-[100dvh] xl:h-screen gap-12 p-4 pt-8 xl:pt-4 xl:flex-row xl:gap-8">
+        <div className="flex flex-col w-full min-h-[100dvh] xl:h-screen gap-12 p-4 pt-8 xl:pt-4 xl:flex-row xl:gap-8  pb-[86px] xl:pb-4">
           <Nav />
           <Main />
           <DayForecast />
@@ -211,7 +211,7 @@ export default function Home() {
               Search for cities
             </Link>
             <button
-              className="px-8 py-2 text-black duration-300 bg-white rounded-lg hover:bg-black hover:text-white"
+              className="px-8 py-2 text-black duration-300 bg-white border rounded-lg hover:bg-black hover:text-white"
               onClick={() => window.location.reload()}
             >
               Reload
