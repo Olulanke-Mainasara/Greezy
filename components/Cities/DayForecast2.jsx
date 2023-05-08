@@ -6,7 +6,7 @@ import { useLocalStorage } from "react-use";
 
 import ErrorOccurred from "../Feedback/ErrorOccurred";
 import GettingWeatherInfo from "../Feedback/GettingWeatherInfo";
-import GeoNotActive from "../Feedback/geoNotActive";
+import GeoNotActive from "../Feedback/GeoNotActive";
 
 const DayForecast2 = () => {
   const [supported, setSupported] = useState(true);

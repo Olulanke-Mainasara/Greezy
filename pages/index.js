@@ -3,7 +3,7 @@ import Head from "next/head";
 import ErrorOccurred from "@/components/Feedback/ErrorOccurred";
 import GettingWeatherInfo from "@/components/Feedback/GettingWeatherInfo";
 import LocationNeeded from "@/components/Feedback/LocationNeeded";
-import GeoNotActive from "@/components/Feedback/geoNotActive";
+import GeoNotActive from "@/components/Feedback/GeoNotActive";
 import DayForecast from "@/components/Main/DayForecast";
 import Main from "@/components/Main/Main";
 import Nav from "@/components/Nav";
