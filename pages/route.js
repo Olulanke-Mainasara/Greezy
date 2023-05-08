@@ -1,9 +1,11 @@
 import Head from "next/head";
 
+import LocationNeeded from "@/components/Feedback/LocationNeeded";
 import Nav from "@/components/Nav";
 import RouteResult from "@/components/Route/RouteResult";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Loading from "react-loading";
+import { useLocalStorage } from "react-use";
 
 import getRoute from "./api/getRoute";
 
@@ -15,33 +17,87 @@ const Route = () => {
   const [origin, setOrigin] = useState("");
   const [destination, setDestination] = useState("");
   const [mode, setMode] = useState("driving-car");
+  const [confirmed, setConfirmed] = useLocalStorage("confirmed");
+  const [askUser, setAskUser] = useState(null);
+  const [handleLocation, setHandleLocation] = useState(0);
 
-  const handleSubmit = async (e) => {
+  useEffect(() => {
+    if (handleLocation === 0) {
+      setHandleLocation(1);
+      return;
+    }
+
+    if (confirmed !== "true") {
+      handleLocationClick();
+    }
+
+    handleSubmit();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [confirmed]);
+
+  const handleLocationClick = () => {
+    setConfirmed("true");
+    setAskUser(false);
+  };
+
+  const handleActive = () => {
+    setAskUser(false);
+  };
+
+  const toggleSubmit = (e) => {
     e.preventDefault();
+    if (startChoice === "Your location" && confirmed !== "true") {
+      setAskUser(true);
+      return;
+    }
+
+    handleSubmit();
+  };
+
+  const handleSubmit = async () => {
+    setError(false);
     setLoading(true);
+    setRoutes([]);
 
     try {
-      //   if (startChoice === "Your location") {
-      //     navigator.geolocation.getCurrentPosition((position) => {
-      //         setOrigin(position)
-      //     })
-      //   } else {
+      if (startChoice === "custom") {
+        try {
+          const options = {
+            origin: origin,
+            destination: destination,
+            mode: mode,
+          };
 
-      //   }
+          const data = await getRoute(options);
 
-      const options = {
-        origin: origin,
-        destination: destination,
-        mode: mode,
-      };
+          setRoutes(data);
+          setLoading(false);
+        } catch (error) {
+          setLoading(false);
+          setError(true);
+        }
+      } else if (startChoice === "Your location") {
+        if (confirmed === "true") {
+          navigator.geolocation.getCurrentPosition(async (position) => {
+            try {
+              const options = {
+                origin: position,
+                destination: destination,
+                mode: mode,
+              };
 
-      const data = await getRoute(options);
-      console.log(data);
-      setRoutes(data);
+              const data = await getRoute(options);
 
-      setLoading(false);
+              setRoutes(data);
+              setLoading(false);
+            } catch (error) {
+              setLoading(false);
+              setError(true);
+            }
+          });
+        }
+      }
     } catch (error) {
-      console.log(error.message);
       setLoading(false);
       setError(true);
     }
@@ -64,13 +120,16 @@ const Route = () => {
             </h1>
 
             <form
-              onSubmit={(e) => handleSubmit(e)}
+              onSubmit={(e) => toggleSubmit(e)}
               className="flex flex-col items-center w-full gap-6 md:flex-row"
             >
               <select
                 required
                 className="w-full h-10 pl-2 text-white bg-transparent border rounded-lg outline-none"
-                onChange={(e) => setStartChoice(e.target.value)}
+                onChange={(e) => {
+                  setStartChoice(e.target.value);
+                  setOrigin("");
+                }}
               >
                 <option value={"Your location"}>Your location</option>
                 <option value={"custom"}>Set location</option>
@@ -82,7 +141,8 @@ const Route = () => {
                   startChoice === "Your location" ? "hidden" : ""
                 }`}
                 placeholder="Starting location"
-                required
+                value={origin}
+                required={startChoice === "Your location" ? false : true}
                 onChange={(e) => setOrigin(e.target.value)}
               ></input>
 
@@ -115,13 +175,13 @@ const Route = () => {
 
           {loading == false && error == false && routes.length == 0 ? (
             <div className="flex items-center justify-center p-8 pt-4 grow">
-              <h1 className="text-3xl text-white xl:text-5xl">
+              <h1 className="text-3xl text-white xl:text-5xl xs:text-2xl">
                 No set route...
               </h1>
             </div>
           ) : error == true && routes.length == 0 ? (
             <div className="flex items-center justify-center p-8 pt-4 grow">
-              <h1 className="text-3xl text-white xl:text-5xl">
+              <h1 className="text-3xl text-white xl:text-5xl xs:text-2xl">
                 Error setting route
               </h1>
             </div>
@@ -132,8 +192,8 @@ const Route = () => {
               ))}
             </div>
           ) : (
-            <div className="flex items-center justify-center p-8 pt-4 grow">
-              <h1 className="flex items-center justify-center gap-2 text-3xl text-white xl:text-5xl">
+            <div className="flex items-center justify-center p-8 pt-4 xs:pt-0 grow">
+              <h1 className="flex items-center justify-center gap-2 text-3xl text-white xl:text-5xl xs:text-2xl xs:flex-col">
                 Setting route
                 <Loading
                   type="spinningBubbles"
@@ -146,6 +206,13 @@ const Route = () => {
           )}
         </section>
       </main>
+
+      {askUser && (
+        <LocationNeeded
+          handleActive={handleActive}
+          handleLocationClick={handleLocationClick}
+        />
+      )}
     </>
   );
 };

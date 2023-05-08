@@ -1,12 +1,14 @@
 import Head from "next/head";
-import Link from "next/link";
 
+import ErrorOccurred from "@/components/Feedback/ErrorOccurred";
+import GettingWeatherInfo from "@/components/Feedback/GettingWeatherInfo";
+import LocationNeeded from "@/components/Feedback/LocationNeeded";
+import GeoNotActive from "@/components/Feedback/geoNotActive";
 import DayForecast from "@/components/Main/DayForecast";
 import Main from "@/components/Main/Main";
 import Nav from "@/components/Nav";
 import Splash from "@/components/Splash-Screen/Splash";
 import { useEffect, useState } from "react";
-import Loading from "react-loading";
 import { useQuery } from "react-query";
 import { useQueryClient } from "react-query";
 import { useLocalStorage, useSessionStorage } from "react-use";
@@ -123,102 +125,13 @@ export default function Home() {
 
       {splashed !== "true" ? <Splash /> : ""}
 
-      {!supported && (
-        <div className="absolute top-0 left-0 z-20 flex flex-col gap-6 items-center justify-center w-full h-full text-white backdrop-brightness-[10%]">
-          <h1 className="text-2xl text-center md:text-4xl">
-            Geolocation is not active / supported
-          </h1>
-          <p className="text-center w-[95%] max-w-lg">
-            Please check your settings and allow location access for this
-            website or check your internet connectivity and make sure you are
-            connected. If after confirming all these, it still doesn&apos;t
-            work, then geolocation is NOT supported by the browser you are
-            currently using.
-          </p>
-          <div className="flex gap-6 xs:flex-col">
-            <Link
-              href={"/cities"}
-              className="px-8 py-2 text-black duration-300 bg-white border rounded-lg hover:bg-black hover:text-white"
-            >
-              Search for cities
-            </Link>
-            <button
-              className="px-8 py-2 text-black duration-300 bg-white border rounded-lg hover:bg-black hover:text-white"
-              onClick={() => window.location.reload()}
-            >
-              Reload
-            </button>
-          </div>
-        </div>
-      )}
+      {!supported && <GeoNotActive />}
 
-      {askUser && (
-        <div className="absolute top-0 left-0 z-20 flex flex-col gap-6 items-center justify-center w-full h-full text-white backdrop-brightness-[10%]">
-          <h1 className="w-[90%] text-2xl text-center md:text-4xl">
-            We need your location 👉👈
-          </h1>
-          <p className="text-center w-[95%] max-w-sm">
-            In order to display accurate weather information for you, our
-            website would need to access your location
-          </p>
-          <div className="flex gap-6">
-            <Link
-              className="px-8 py-2 text-black duration-300 bg-white border rounded-lg hover:bg-black hover:text-white"
-              href={"/cities"}
-            >
-              Deny
-            </Link>
-            <button
-              className="px-8 py-2 text-black duration-300 bg-white border rounded-lg hover:bg-black hover:text-white"
-              onClick={handleLocationClick}
-            >
-              Allow
-            </button>
-          </div>
-        </div>
-      )}
+      {askUser && <LocationNeeded handleLocationClick={handleLocationClick} />}
 
-      {loading && (
-        <div className="absolute top-0 left-0 z-20 flex items-center justify-center w-full h-full text-white backdrop-brightness-[10%]">
-          <h1 className="flex items-center justify-center gap-2 text-2xl text-center xs:flex-col md:text-3xl">
-            Getting weather information
-            <Loading
-              type="spinningBubbles"
-              color="#fff"
-              height={50}
-              width={50}
-            />
-          </h1>
-        </div>
-      )}
+      {loading && <GettingWeatherInfo />}
 
-      {error && (
-        <div className="absolute top-0 left-0 z-20 flex flex-col gap-6 items-center justify-center w-full h-full text-white backdrop-brightness-[10%]">
-          <h1 className="text-2xl text-center md:text-3xl">
-            An error occurred
-          </h1>
-          <p className="text-center w-[95%] max-w-lg">
-            A server error occurred, try reloading the browser and check to make
-            sure that you are connected to a functioning internet connection. If
-            the error persists, please contact my developers for more info and a
-            possible resolution of the error.
-          </p>
-          <div className="flex gap-6 xs:flex-col">
-            <Link
-              href={"/cities"}
-              className="px-8 py-2 text-black duration-300 bg-white border rounded-lg hover:bg-black hover:text-white"
-            >
-              Search for cities
-            </Link>
-            <button
-              className="px-8 py-2 text-black duration-300 bg-white border rounded-lg hover:bg-black hover:text-white"
-              onClick={() => window.location.reload()}
-            >
-              Reload
-            </button>
-          </div>
-        </div>
-      )}
+      {error && <ErrorOccurred />}
     </>
   );
 }

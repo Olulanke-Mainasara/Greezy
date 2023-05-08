@@ -12,19 +12,25 @@ import getCities from "./api/getCities";
 const Cities = () => {
   const [searchResults, setSearchResults] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(false);
 
   const handleKeyPress = async (e) => {
     if (e.key === "Enter") {
       e.preventDefault();
+      setError(false);
       setLoading(true);
       try {
         const data = await getCities(e);
-        console.log(data);
+
+        if (data.length == 0) {
+          setError(true);
+        }
 
         setSearchResults(data);
         setLoading(false);
       } catch (error) {
-        console.log(error.message);
+        setLoading(false);
+        setError(true);
       }
     }
   };
@@ -57,14 +63,20 @@ const Cities = () => {
               </form>
             </div>
 
-            {(loading == false) & (searchResults.length == 0) ? (
+            {loading == false && error == false && searchResults.length == 0 ? (
               <div className="flex items-center justify-center p-8 pt-4 grow">
                 <h1 className="text-3xl text-white xl:text-5xl">
                   No searches...
                 </h1>
               </div>
-            ) : (loading == false) & (searchResults.length > 0) ? (
-              <div className="grid grid-cols-1 gap-10 xl:gap-y-14 md:grid-cols-3 grow md:grow-0">
+            ) : error == true && searchResults.length == 0 ? (
+              <div className="flex items-center justify-center p-8 pt-4 grow">
+                <h1 className="text-3xl text-white xl:text-5xl">
+                  Error locating city
+                </h1>
+              </div>
+            ) : loading == false && searchResults.length > 0 ? (
+              <div className="grid grid-cols-1 gap-10 xl:gap-y-14 md:grid-cols-3 2xl:grid-cols-4 grow md:grow-0">
                 {searchResults.map((result) => (
                   <CityResult key={Math.random() * 10000} result={result} />
                 ))}

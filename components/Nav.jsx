@@ -20,7 +20,7 @@ const Nav = () => {
             title="Your weather info"
             className="xl:w-[51px] xl:h-[51px] xl:rounded-full xl:hover:bg-white xl:hover:text-black duration-500 flex items-center justify-center w-auto h-auto hover:bg-transparent"
           >
-            <FaCloud className="text-2xl" />
+            <FaCloud className="text-2xl xs:text-xl" />
           </Link>
         </li>
 
@@ -30,7 +30,7 @@ const Nav = () => {
             title="View map"
             className="xl:w-[51px] xl:h-[51px] xl:rounded-full xl:hover:bg-white xl:hover:text-black duration-500 flex items-center justify-center w-auto h-auto hover:bg-transparent"
           >
-            <FaMap className="text-2xl" />
+            <FaMap className="text-2xl xs:text-xl" />
           </Link>
         </li>
 
@@ -40,7 +40,7 @@ const Nav = () => {
             title="Get a route"
             className="xl:w-[51px] xl:h-[51px] xl:rounded-full xl:hover:bg-white xl:hover:text-black duration-500 flex items-center justify-center w-auto h-auto hover:bg-transparent"
           >
-            <FaDirections className="text-2xl" />
+            <FaDirections className="text-2xl xs:text-xl" />
           </Link>
         </li>
 
@@ -50,7 +50,7 @@ const Nav = () => {
             title="Search for cities"
             className="xl:w-[51px] xl:h-[51px] xl:rounded-full xl:hover:bg-white xl:hover:text-black duration-500 flex items-center justify-center w-auto h-auto hover:bg-transparent"
           >
-            <FaSearch className="text-2xl" />
+            <FaSearch className="text-2xl xs:text-xl" />
           </Link>
         </li>
       </ul>

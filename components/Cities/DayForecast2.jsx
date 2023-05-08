@@ -1,9 +1,12 @@
 import gettingCurrentConditions from "@/utils/getCurrentConditions";
 import React, { useEffect, useState } from "react";
-import Loading from "react-loading";
 import { useQuery } from "react-query";
 import { useQueryClient } from "react-query";
 import { useLocalStorage } from "react-use";
+
+import ErrorOccurred from "../Feedback/ErrorOccurred";
+import GettingWeatherInfo from "../Feedback/GettingWeatherInfo";
+import GeoNotActive from "../Feedback/geoNotActive";
 
 const DayForecast2 = () => {
   const [supported, setSupported] = useState(true);
@@ -71,72 +74,15 @@ const DayForecast2 = () => {
   );
 
   if (!supported) {
-    return (
-      <div className="absolute top-0 left-0 z-20 flex flex-col gap-6 items-center justify-center w-full h-full text-white backdrop-brightness-[10%]">
-        <h1 className="text-2xl text-center md:text-4xl">
-          Geolocation is not active / supported
-        </h1>
-        <p className="text-center w-[95%] max-w-lg">
-          Please check your settings and allow location access for this website
-          or check your internet connectivity and make sure you are connected.
-          If after confirming all these, it still doesn&apos;t work, then
-          geolocation is NOT supported by the browser you are currently using.
-        </p>
-        <div className="flex gap-6 xs:flex-col">
-          <button
-            className="px-8 py-2 text-black duration-300 bg-white border rounded-lg hover:bg-black hover:text-white"
-            onClick={() => cancelConfirmed()}
-          >
-            Cancel
-          </button>
-          <button
-            className="px-8 py-2 text-black duration-300 bg-white border rounded-lg hover:bg-black hover:text-white"
-            onClick={() => window.location.reload()}
-          >
-            Reload
-          </button>
-        </div>
-      </div>
-    );
+    return <GeoNotActive />;
   }
 
   if (isLoading) {
-    return (
-      <div className="absolute top-0 left-0 z-20 flex items-center justify-center w-full h-full text-white backdrop-brightness-[10%]">
-        <h1 className="flex items-center justify-center gap-2 text-2xl text-center md:text-3xl xs:flex-col">
-          Getting weather information
-          <Loading type="spinningBubbles" color="#fff" height={50} width={50} />
-        </h1>
-      </div>
-    );
+    return <GettingWeatherInfo />;
   }
 
   if (error) {
-    return (
-      <div className="absolute top-0 left-0 z-20 flex flex-col gap-6 items-center justify-center w-full h-full text-white backdrop-brightness-[10%]">
-        <h1 className="text-2xl text-center md:text-3xl">An error occurred</h1>
-        <p className="text-center w-[95%] max-w-lg">
-          A server error occurred, try reloading the browser and check to make
-          sure that you are connected to a functioning internet connection. If
-          the error persists, please contact my developers for more info and a
-          possible resolution of the error.
-        </p>
-        <div className="flex gap-6 xs:flex-col">
-          <button
-            className="px-8 py-2 text-black duration-300 bg-white border rounded-lg hover:bg-black hover:text-white"
-            onClick={() => cancelError()}
-          >
-            Cancel
-          </button>
-          <button
-            className="px-8 py-2 text-black duration-300 bg-white border rounded-lg hover:bg-black hover:text-white"
-            onClick={() => window.location.reload()}
-          >
-            Reload
-          </button>
-        </div>
-      </div>
-    );
+    return <ErrorOccurred />;
   }
 
   if (isError) {
