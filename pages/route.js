@@ -1,13 +1,15 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import Head from "next/head";
 
+import GeoNotActive from "@/components/Feedback/GeoNotActive";
 import LocationNeeded from "@/components/Feedback/LocationNeeded";
 import Nav from "@/components/Nav";
 import RouteResult from "@/components/Route/RouteResult";
+import getCities from "@/utils/getCities";
+import getRoute from "@/utils/getRoute";
 import { useEffect, useState } from "react";
 import Loading from "react-loading";
 import { useLocalStorage } from "react-use";
-
-import getRoute from "./api/getRoute";
 
 const Route = () => {
   const [routes, setRoutes] = useState([]);
@@ -19,7 +21,54 @@ const Route = () => {
   const [mode, setMode] = useState("driving-car");
   const [confirmed, setConfirmed] = useLocalStorage("confirmed");
   const [askUser, setAskUser] = useState(null);
+  const [supported, setSupported] = useState(true);
   const [handleLocation, setHandleLocation] = useState(0);
+
+  const handleRequests = async ({ origin, destination, mode }) => {
+    try {
+      // API call to fetch the coords for the origin location
+      let originCoords;
+      if (Array.isArray(origin)) {
+        originCoords = `${origin[0]},${origin[1]}`;
+      } else {
+        const originJsonData = await getCities(
+          origin,
+          "addressdetails=1&limit=1"
+        );
+        originCoords = `${originJsonData[0].lon},${originJsonData[0].lat}`;
+      }
+
+      setTimeout(async () => {
+        try {
+          // API call to fetch the coords for the destination location
+          const destinationJsonData = await getCities(
+            destination,
+            "addressdetails=1&limit=1"
+          );
+          const destinationCoords = `${destinationJsonData[0].lon},${destinationJsonData[0].lat}`;
+
+          // Fetch request to the backend serverless function (getRoute)
+          const data = await getRoute(originCoords, destinationCoords, mode);
+
+          if (data.length === 0) {
+            setLoading(false);
+            setError(true);
+            return;
+          }
+
+          setRoutes(data);
+          setLoading(false);
+        } catch (error) {
+          setLoading(false);
+          setError(true);
+        }
+      }, 1000);
+    } catch (error) {
+      console.log(error.message);
+      setLoading(false);
+      setError(true);
+    }
+  };
 
   useEffect(() => {
     if (handleLocation === 0) {
@@ -32,7 +81,6 @@ const Route = () => {
     }
 
     handleSubmit();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [confirmed]);
 
   const handleLocationClick = () => {
@@ -42,6 +90,10 @@ const Route = () => {
 
   const handleActive = () => {
     setAskUser(false);
+  };
+
+  const cancelSupported = () => {
+    setSupported(true);
   };
 
   const toggleSubmit = (e) => {
@@ -59,48 +111,39 @@ const Route = () => {
     setLoading(true);
     setRoutes([]);
 
-    try {
-      if (startChoice === "custom") {
-        try {
-          const options = {
-            origin: origin,
-            destination: destination,
-            mode: mode,
-          };
+    if (startChoice === "custom") {
+      const options = {
+        origin: origin,
+        destination: destination,
+        mode: mode,
+      };
 
-          const data = await getRoute(options);
-
-          setRoutes(data);
-          setLoading(false);
-        } catch (error) {
-          setLoading(false);
-          setError(true);
-        }
-      } else if (startChoice === "Your location") {
-        if (confirmed === "true") {
-          navigator.geolocation.getCurrentPosition(async (position) => {
-            try {
-              const options = {
-                origin: position,
-                destination: destination,
-                mode: mode,
-              };
-
-              const data = await getRoute(options);
-
-              setRoutes(data);
-              setLoading(false);
-            } catch (error) {
-              setLoading(false);
-              setError(true);
-            }
-          });
-        }
-      }
-    } catch (error) {
-      setLoading(false);
-      setError(true);
+      handleRequests(options);
+      return;
     }
+
+    if (!navigator.geolocation) {
+      setLoading(false);
+      setSupported(false);
+      return;
+    }
+
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        const options = {
+          origin: [position.coords.longitude, position.coords.latitude],
+          destination: destination,
+          mode: mode,
+        };
+
+        handleRequests(options);
+      },
+      (error) => {
+        setLoading(false);
+        setSupported(false);
+        return;
+      }
+    );
   };
 
   return (
@@ -213,6 +256,8 @@ const Route = () => {
           handleLocationClick={handleLocationClick}
         />
       )}
+
+      {!supported && <GeoNotActive cancelSupported={cancelSupported} />}
     </>
   );
 };

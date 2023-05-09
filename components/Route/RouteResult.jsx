@@ -9,9 +9,9 @@ const RouteResult = ({ route }) => {
       </div>
 
       <div className="flex flex-col w-full pl-3 justify-evenly">
-        <h1 className="text-xl">Distance: {route.distance}</h1>
+        <h1 className="text-xl">Distance: {route.distance}m</h1>
         <h1 className="text-3xl">{route.instruction}</h1>
-        <h1 className="text-xl">Duration: {route.duration}</h1>
+        <h1 className="text-xl">Duration: {route.duration}mins</h1>
       </div>
     </article>
   );

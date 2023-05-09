@@ -50,7 +50,7 @@ const Map = () => {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <main className="flex items-center w-screen h-screen gap-8 bg-[#262626] xl:p-4 pb-[58px] xl:pb-4">
+      <main className="flex items-center w-screen h-[100dvh] gap-8 bg-[#262626] xl:p-4 pb-[58px] xl:pb-4">
         <Nav />
         <section className="relative z-10 h-full overflow-hidden border xl:rounded-3xl grow">
           <MapInfo confirmed={confirmed} />

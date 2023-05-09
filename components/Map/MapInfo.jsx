@@ -3,7 +3,6 @@ import React, { useEffect, useRef, useState } from "react";
 import { MapContainer, Marker, Popup, TileLayer } from "react-leaflet";
 
 const MapInfo = ({ confirmed }) => {
-  console.log(confirmed);
   const mapRef = useRef(null);
   const [lat, setLat] = useState(51.505);
   const [lng, setLng] = useState(-0.09);
@@ -47,7 +46,10 @@ const MapInfo = ({ confirmed }) => {
         />
         <Marker icon={myIcon} position={[lat, lng]}>
           <Popup>
-            {confirmed === "true" ? "Your current location." : "A random location"} <br /> {"lat: " + lat + ", lng: " + lng}
+            {confirmed === "true"
+              ? "Your current location."
+              : "A random location"}{" "}
+            <br /> {"lat: " + lat + ", lng: " + lng}
           </Popup>
         </Marker>
       </MapContainer>

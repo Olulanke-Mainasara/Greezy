@@ -1,6 +1,6 @@
 import React from "react";
 import { FaArrowDown } from "react-icons/fa";
-import { QueryClient, useQueryClient } from "react-query";
+import { useQueryClient } from "react-query";
 
 const HourlyInfo = () => {
   const QueryClient = useQueryClient();
@@ -100,10 +100,7 @@ const HourlyInfo = () => {
               <React.Fragment key={time}>
                 <div className="flex flex-col justify-end h-40 p-4 border shadow-2xl md:min-h-[176px] rounded-3xl xs:h-32">
                   <h1 className="text-lg">Real Feel</h1>
-                  <h1
-                    id="realFeel"
-                    className="text-3xl allEM:text-2xl allT:text-xl"
-                  >
+                  <h1 id="realFeel" className="text-2xl sm:text-3xl xs:text-xl">
                     {realFeel[index] + "°C"}
                   </h1>
                 </div>
@@ -111,26 +108,20 @@ const HourlyInfo = () => {
                   <h1 className="text-lg">Visibility</h1>
                   <h1
                     id="visibility"
-                    className="text-3xl allEM:text-2xl allT:text-xl"
+                    className="text-2xl sm:text-3xl xs:text-xl"
                   >
                     {visibility[index] / 1000 + "Km"}
                   </h1>
                 </div>
                 <div className="flex flex-col justify-end h-40 p-4 border shadow-2xl md:min-h-[176px] rounded-3xl xs:h-32">
                   <h1 className="text-lg">Humidity</h1>
-                  <h1
-                    id="humidity"
-                    className="text-3xl allEM:text-2xl allT:text-xl"
-                  >
+                  <h1 id="humidity" className="text-2xl sm:text-3xl xs:text-xl">
                     {humidity[index] + "%"}
                   </h1>
                 </div>
                 <div className="flex flex-col justify-end h-40 p-4 border shadow-2xl md:min-h-[176px] rounded-3xl xs:h-32">
                   <h1 className="text-lg">Pressure</h1>
-                  <h1
-                    id="pressure"
-                    className="text-3xl allEM:text-2xl allT:text-xl"
-                  >
+                  <h1 id="pressure" className="text-2xl sm:text-3xl xs:text-xl">
                     {pressure[index] + "hPa"}
                   </h1>
                 </div>
@@ -138,7 +129,7 @@ const HourlyInfo = () => {
                   <h1 className="text-lg">Wind Direction</h1>
                   <h1
                     id="windDirection"
-                    className="text-3xl allEM:text-2xl allT:text-xl"
+                    className="text-2xl sm:text-3xl xs:text-xl"
                   >
                     {windDirection[index] + "°"}
                   </h1>
@@ -150,7 +141,7 @@ const HourlyInfo = () => {
 
         <div className="flex flex-col justify-center p-4 border shadow-2xl h-44 rounded-3xl allT:h-40">
           <h1 className="text-lg">Sunset</h1>
-          <h1 id="sunset" className="text-3xl allEM:text-2xl allT:text-xl">
+          <h1 id="sunset" className="text-2xl sm:text-3xl xs:text-xl">
             {sunset.map((set) => {
               const splitDate = set.split("T");
               const furtherSplitDate = splitDate[0].split("-");
@@ -166,7 +157,7 @@ const HourlyInfo = () => {
           </h1>
           <br />
           <h1 className="text-lg">Sunrise</h1>
-          <h1 className="text-3xl allEM:text-2xl allT:text-xl">
+          <h1 className="text-2xl sm:text-3xl xs:text-xl">
             {sunrise.map((rise) => {
               const splitDate = rise.split("T");
               const furtherSplitDate = splitDate[0].split("-");

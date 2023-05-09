@@ -1,13 +1,14 @@
 import Head from "next/head";
 
 import ErrorOccurred from "@/components/Feedback/ErrorOccurred";
+import GeoNotActive from "@/components/Feedback/GeoNotActive";
 import GettingWeatherInfo from "@/components/Feedback/GettingWeatherInfo";
 import LocationNeeded from "@/components/Feedback/LocationNeeded";
-import GeoNotActive from "@/components/Feedback/GeoNotActive";
 import DayForecast from "@/components/Main/DayForecast";
 import Main from "@/components/Main/Main";
 import Nav from "@/components/Nav";
 import Splash from "@/components/Splash-Screen/Splash";
+import getWeatherInfo from "@/utils/getWeatherInfo";
 import { useEffect, useState } from "react";
 import { useQuery } from "react-query";
 import { useQueryClient } from "react-query";
@@ -64,17 +65,9 @@ export default function Home() {
     };
   }, [confirmed, setSplashed, weatherInfo]);
 
-  async function fetchData(location) {
-    const rawData = await fetch(
-      `https://api.open-meteo.com/v1/forecast?latitude=${location.latitude}&longitude=${location.longitude}&hourly=temperature_2m,relativehumidity_2m,apparent_temperature,weathercode,pressure_msl,visibility,windspeed_80m,winddirection_80m&models=best_match&daily=weathercode,temperature_2m_max,temperature_2m_min,sunrise,sunset&current_weather=true&windspeed_unit=ms&timezone=auto`
-    );
-    const jsonData = rawData.json();
-    return jsonData;
-  }
-
   const { isError, isLoading, data } = useQuery(
     "weatherInfo",
-    () => fetchData(location),
+    () => getWeatherInfo(location),
     {
       enabled: !!location,
       staleTime: 300000,
@@ -87,17 +80,17 @@ export default function Home() {
     }
   }
 
-  if (data) {
-    if (loading === true) {
-      setLoading(null);
-    }
-  }
-
   if (isError) {
     if (error === null) {
       setError(true);
       setLoading(null);
       setLocation(null);
+    }
+  }
+
+  if (data) {
+    if (loading === true) {
+      setLoading(false);
     }
   }
 

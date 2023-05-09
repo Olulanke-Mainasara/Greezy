@@ -3,11 +3,10 @@ import Head from "next/head";
 import CityResult from "@/components/Cities/CityResult";
 import DayForecast2 from "@/components/Cities/DayForecast2";
 import Nav from "@/components/Nav";
+import getCities from "@/utils/getCities";
 import React, { useState } from "react";
 import { FaSearch } from "react-icons/fa";
 import Loading from "react-loading";
-
-import getCities from "./api/getCities";
 
 const Cities = () => {
   const [searchResults, setSearchResults] = useState([]);
@@ -19,14 +18,19 @@ const Cities = () => {
       e.preventDefault();
       setError(false);
       setLoading(true);
-      try {
-        const data = await getCities(e);
 
-        if (data.length == 0) {
+      try {
+        const city = e.target.value;
+
+        const awaitedData = await getCities(city);
+
+        if (awaitedData.length === 0) {
+          setLoading(false);
           setError(true);
+          return;
         }
 
-        setSearchResults(data);
+        setSearchResults(awaitedData);
         setLoading(false);
       } catch (error) {
         setLoading(false);
@@ -76,7 +80,7 @@ const Cities = () => {
                 </h1>
               </div>
             ) : loading == false && searchResults.length > 0 ? (
-              <div className="grid grid-cols-1 gap-10 xl:gap-y-14 md:grid-cols-3 2xl:grid-cols-4 grow md:grow-0">
+              <div className="grid grid-cols-1 gap-10 overflow-scroll xl:gap-y-14 md:grid-cols-3 2xl:grid-cols-4 grow hideScroll">
                 {searchResults.map((result) => (
                   <CityResult key={Math.random() * 10000} result={result} />
                 ))}

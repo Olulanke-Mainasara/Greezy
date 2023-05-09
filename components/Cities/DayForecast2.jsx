@@ -1,12 +1,13 @@
 import gettingCurrentConditions from "@/utils/getCurrentConditions";
+import getWeatherInfo from "@/utils/getWeatherInfo";
 import React, { useEffect, useState } from "react";
 import { useQuery } from "react-query";
 import { useQueryClient } from "react-query";
 import { useLocalStorage } from "react-use";
 
 import ErrorOccurred from "../Feedback/ErrorOccurred";
-import GettingWeatherInfo from "../Feedback/GettingWeatherInfo";
 import GeoNotActive from "../Feedback/GeoNotActive";
+import GettingWeatherInfo from "../Feedback/GettingWeatherInfo";
 
 const DayForecast2 = () => {
   const [supported, setSupported] = useState(true);
@@ -17,13 +18,8 @@ const DayForecast2 = () => {
   const queryClient = useQueryClient();
   const dayForecast = queryClient.getQueryData("weatherInfo");
 
-  const cancelConfirmed = () => {
-    setConfirmed("");
-  };
-
-  const cancelError = () => {
-    setError("");
-    setConfirmed("");
+  const cancelSupported = () => {
+    setSupported(true);
   };
 
   const handleLocationClick = () => {
@@ -56,17 +52,9 @@ const DayForecast2 = () => {
     setSupported(true);
   }, [confirmed, dayForecast]);
 
-  async function fetchData(location) {
-    const rawData = await fetch(
-      `https://api.open-meteo.com/v1/forecast?latitude=${location.latitude}&longitude=${location.longitude}&hourly=temperature_2m,relativehumidity_2m,apparent_temperature,weathercode,pressure_msl,visibility,windspeed_80m,winddirection_80m&models=best_match&daily=weathercode,temperature_2m_max,temperature_2m_min,sunrise,sunset&current_weather=true&windspeed_unit=ms&timezone=auto`
-    );
-    const jsonData = rawData.json();
-    return jsonData;
-  }
-
   const { isLoading, isError } = useQuery(
     "weatherInfo",
-    () => fetchData(location),
+    () => getWeatherInfo(location),
     {
       enabled: !!location,
       staleTime: 300000,
@@ -74,7 +62,7 @@ const DayForecast2 = () => {
   );
 
   if (!supported) {
-    return <GeoNotActive />;
+    return <GeoNotActive cancelSupported={cancelSupported} />;
   }
 
   if (isLoading) {

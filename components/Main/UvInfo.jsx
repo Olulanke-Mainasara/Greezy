@@ -1,22 +1,22 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from "react";
+import { FaSun } from "react-icons/fa";
 import { useQuery, useQueryClient } from "react-query";
-import { useLocalStorage } from "react-use";
 
-const UvInfo = () => {
+const UvInfo = ({ confirmed }) => {
   const [location, setLocation] = useState(null);
-  const [confirmed] = useLocalStorage("confirmed");
   const queryClient = useQueryClient();
   const uvInfo = queryClient.getQueryData("uvInfo");
 
   useEffect(() => {
-    if (confirmed === "true") {
+    if (confirmed === true) {
       if (!uvInfo) {
         navigator.geolocation.getCurrentPosition((position) => {
           setLocation(position.coords);
         });
       }
     }
-  });
+  }, [confirmed]);
 
   const getUvInfo = async (l) => {
     try {
@@ -55,8 +55,6 @@ const UvInfo = () => {
       console.log(error.message);
       return { uvNumber: "- -", uvText: "API quota 😔" };
     }
-
-    return uvInfo;
   };
 
   const { isError, isLoading, data } = useQuery(
@@ -109,6 +107,24 @@ const UvInfo = () => {
       </section>
     );
   }
+
+  return (
+    <>
+      {!uvInfo && (
+        <section className="flex flex-col items-center border shadow-2xl rounded-3xl justify-evenly md:h-48 h-44 xl:h-full">
+          <h1 className="flex items-center gap-2 text-xl">
+            <FaSun /> - -
+          </h1>
+          <h1 id="uvIndex" className="sm:text-5xl text-7xl">
+            - -
+          </h1>
+          <h1 id="exposureLevel" className="text-xl">
+            - -
+          </h1>
+        </section>
+      )}
+    </>
+  );
 };
 
 export default UvInfo;

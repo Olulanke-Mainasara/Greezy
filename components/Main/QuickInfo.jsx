@@ -1,20 +1,19 @@
 import gettingCurrentConditions from "@/utils/getCurrentConditions";
-import React from "react";
-import { FaMapMarkerAlt, FaSun, FaWind } from "react-icons/fa";
+import React, { useState } from "react";
+import { FaMapMarkerAlt, FaWind } from "react-icons/fa";
 import { useQueryClient } from "react-query";
 
 import UvInfo from "./UvInfo";
 
 const QuickInfo = () => {
   const queryClient = useQueryClient();
-
-  // Retrieve weather data from the cache
   const weatherData = queryClient.getQueryData("weatherInfo");
+  const [confirmed, setConfirmed] = useState(false);
 
   if (!weatherData) {
     return (
       <section className="grid w-full grid-cols-2 gap-6 text-white xs:grid-cols-1 xl:grid-cols-3">
-        <section className="flex flex-col items-center col-span-2 border shadow-2xl rounded-3xl justify-evenly md:h-48 h-44 xl:h-full md:col-span-1 xs:col-span-1">
+        <section className="flex flex-col items-center col-span-2 border shadow-2xl md:flex-row xl:flex-col rounded-3xl justify-evenly md:h-48 h-44 xl:h-full xl:col-span-1 xs:col-span-1">
           <h1 id="currentLocation" className="flex items-center gap-2 text-xl">
             <FaMapMarkerAlt /> - -
           </h1>
@@ -36,24 +35,22 @@ const QuickInfo = () => {
           <h1 className="text-xl">- -</h1>
         </section>
 
-        <section className="flex flex-col items-center border shadow-2xl rounded-3xl justify-evenly md:h-48 h-44 xl:h-full">
-          <h1 className="flex items-center gap-2 text-xl">
-            <FaSun /> - -
-          </h1>
-          <h1 id="uvIndex" className="sm:text-5xl text-7xl">
-            - -
-          </h1>
-          <h1 id="exposureLevel" className="text-xl"></h1>
-        </section>
+        <UvInfo confirmed={confirmed} />
       </section>
     );
+  }
+
+  if (weatherData) {
+    if (confirmed === false) {
+      setConfirmed(true);
+    }
   }
 
   const location = weatherData.timezone.split("/");
 
   return (
     <section className="grid w-full grid-cols-2 gap-6 text-white xs:grid-cols-1 xl:grid-cols-3">
-      <section className="flex flex-col items-center col-span-2 border shadow-2xl rounded-3xl justify-evenly md:h-48 h-44 xl:h-full md:col-span-1 xs:col-span-1">
+      <section className="flex flex-col items-center col-span-2 border shadow-2xl md:flex-row xl:flex-col rounded-3xl justify-evenly md:h-48 h-44 xl:h-full xl:col-span-1 xs:col-span-1">
         <h1 id="currentLocation" className="flex items-center gap-2 text-xl">
           <FaMapMarkerAlt />
           {location[1]}
@@ -74,7 +71,7 @@ const QuickInfo = () => {
         <h1 className="text-xl">m / s</h1>
       </section>
 
-      <UvInfo />
+      <UvInfo confirmed={confirmed} />
     </section>
   );
 };
