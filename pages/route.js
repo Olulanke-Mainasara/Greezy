@@ -64,7 +64,6 @@ const Route = () => {
         }
       }, 1000);
     } catch (error) {
-      console.log(error.message);
       setLoading(false);
       setError(true);
     }
@@ -183,7 +182,7 @@ const Route = () => {
                 className={`w-full h-10 pl-2 text-white bg-transparent border rounded-lg outline-none ${
                   startChoice === "Your location" ? "hidden" : ""
                 }`}
-                placeholder="Starting location"
+                placeholder="Starting location e.g Ikeja, Lagos"
                 value={origin}
                 required={startChoice === "Your location" ? false : true}
                 onChange={(e) => setOrigin(e.target.value)}
@@ -192,7 +191,7 @@ const Route = () => {
               <input
                 type="text"
                 className="w-full h-10 pl-2 text-white bg-transparent border rounded-lg outline-none"
-                placeholder="Destination"
+                placeholder="Destination e.g Magodo, Lagos"
                 required
                 onChange={(e) => setDestination(e.target.value)}
               ></input>

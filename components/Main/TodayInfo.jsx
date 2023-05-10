@@ -13,7 +13,7 @@ const TodayInfo = () => {
         <h1 className="text-3xl">Today&apos;s Forecast</h1>
 
         <section className="w-full h-full overflow-scroll border shadow-2xl rounded-3xl hideScroll background">
-          <section className="flex items-center justify-center w-full h-48 text-2xl xl:h-full">
+          <section className="flex items-center justify-center w-full h-48 text-2xl xl:h-full xs:text-xl">
             <h1>No weather info available</h1>
           </section>
         </section>

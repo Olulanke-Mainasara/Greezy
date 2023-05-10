@@ -52,7 +52,6 @@ const UvInfo = ({ confirmed }) => {
 
       return { uvNumber: uvNumber, uvText: uvText };
     } catch (error) {
-      console.log(error.message);
       return { uvNumber: "- -", uvText: "API quota 😔" };
     }
   };

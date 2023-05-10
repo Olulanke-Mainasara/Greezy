@@ -4,7 +4,7 @@ import CityResult from "@/components/Cities/CityResult";
 import DayForecast2 from "@/components/Cities/DayForecast2";
 import Nav from "@/components/Nav";
 import getCities from "@/utils/getCities";
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { FaSearch } from "react-icons/fa";
 import Loading from "react-loading";
 
@@ -12,30 +12,32 @@ const Cities = () => {
   const [searchResults, setSearchResults] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
+  const query = useRef("");
 
-  const handleKeyPress = async (e) => {
-    if (e.key === "Enter") {
-      e.preventDefault();
-      setError(false);
-      setLoading(true);
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setError(false);
+    setLoading(true);
+    setSearchResults([]);
 
-      try {
-        const city = e.target.value;
+    try {
+      const awaitedData = await getCities(
+        query.current.value,
+        "addressdetails=1"
+      );
 
-        const awaitedData = await getCities(city);
-
-        if (awaitedData.length === 0) {
-          setLoading(false);
-          setError(true);
-          return;
-        }
-
-        setSearchResults(awaitedData);
-        setLoading(false);
-      } catch (error) {
+      if (awaitedData.length === 0) {
         setLoading(false);
         setError(true);
+        return;
       }
+
+      query.current.value = "";
+      setSearchResults(awaitedData);
+      setLoading(false);
+    } catch (error) {
+      setLoading(false);
+      setError(true);
     }
   };
 
@@ -51,25 +53,34 @@ const Cities = () => {
         <div className="flex flex-col w-full min-h-[100dvh] xl:h-screen gap-12 p-4 xl:flex-row xl:gap-8 pb-[86px] xl:pb-4">
           <Nav />
           <section className="flex flex-col p-4 pb-5 space-y-10 border grow background rounded-3xl md:p-8 h-fit xl:h-auto">
-            <div className="flex items-center w-full gap-4">
+            <div className="flex flex-col sm:flex-row items-center w-full gap-4">
               <h1 className="text-4xl text-center text-white xl:text-7xl">
                 Cities
               </h1>
 
-              <form className="flex items-center w-full h-10 gap-2 pl-2 border rounded-lg">
+              <form
+                onSubmit={(e) => handleSubmit(e)}
+                className="flex items-center w-full h-10 gap-2 pl-2 border rounded-lg"
+              >
                 <FaSearch color="#fff" />
                 <input
                   type="search"
                   className="w-full h-full text-white bg-transparent outline-none"
-                  placeholder="Search for a city"
-                  onKeyDown={handleKeyPress}
+                  placeholder="Search e.g Lagos"
+                  ref={query}
                 ></input>
+                <button
+                  className="px-4 h-full text-black duration-300 bg-white border rounded-md hover:bg-black hover:text-white"
+                  type="submit"
+                >
+                  search
+                </button>
               </form>
             </div>
 
             {loading == false && error == false && searchResults.length == 0 ? (
               <div className="flex items-center justify-center p-8 pt-4 grow">
-                <h1 className="text-3xl text-white xl:text-5xl">
+                <h1 className="text-3xl text-white xl:text-5xl xs:text-2xl">
                   No searches...
                 </h1>
               </div>
