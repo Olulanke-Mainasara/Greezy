@@ -10,7 +10,7 @@ import { useLocalStorage } from "react-use";
 const Map = () => {
   const [askUser, setAskUser] = useState(null);
   const [confirmed, setConfirmed] = useLocalStorage("confirmed");
-  const [timeoutId, setTimeoutId] = useState(null);
+  const [recalculate, setRecalculate] = useState(false);
 
   useEffect(() => {
     if (confirmed !== "true") {
@@ -20,18 +20,13 @@ const Map = () => {
   }, []);
 
   const handlePinpoint = () => {
-    setConfirmed("false");
-    const timeout = setTimeout(() => setConfirmed("true"), 500);
-    setTimeoutId(timeout);
-  };
+    if (confirmed === "true") {
+      setRecalculate((prev) => !prev);
+      return;
+    }
 
-  useEffect(() => {
-    return () => {
-      if (timeoutId) {
-        clearTimeout(timeoutId);
-      }
-    };
-  }, [timeoutId]);
+    setAskUser(true);
+  };
 
   const handleLocationClick = () => {
     setConfirmed("true");
@@ -52,15 +47,15 @@ const Map = () => {
       </Head>
       <main className="flex items-center w-screen h-[100dvh] gap-8 bg-[#262626] xl:p-4 pb-[58px] xl:pb-4">
         <Nav />
-        <section className="relative z-10 h-full overflow-hidden border xl:rounded-3xl grow">
-          <MapInfo confirmed={confirmed} />
+        <section className="relative h-full overflow-hidden xl:border xl:rounded-3xl grow">
+          <MapInfo confirmed={confirmed} recalculate={recalculate} />
+          <button
+            className="absolute z-10 px-10 py-3 text-white duration-300 bg-black rounded-lg rounded-tl-none rounded-br-none right-3 top-3 xl:top-0 xl:right-0 xl:py-4 xl:px-10 xl:rounded-tr-3xl"
+            onClick={handlePinpoint}
+          >
+            <FaLocationArrow />
+          </button>
         </section>
-        <button
-          className="absolute z-20 px-8 py-2 text-white duration-300 bg-black rounded-lg rounded-tl-none rounded-br-none top-3 right-3 xl:right-4 xl:top-4 hover:bg-black hover:text-white"
-          onClick={handlePinpoint}
-        >
-          <FaLocationArrow />
-        </button>
       </main>
 
       {askUser && (

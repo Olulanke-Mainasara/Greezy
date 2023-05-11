@@ -23,6 +23,7 @@ const Route = () => {
   const [askUser, setAskUser] = useState(null);
   const [supported, setSupported] = useState(true);
   const [handleLocation, setHandleLocation] = useState(0);
+  const [timeoutId, setTimeoutId] = useState(null);
 
   const handleRequests = async ({ origin, destination, mode }) => {
     try {
@@ -38,7 +39,7 @@ const Route = () => {
         originCoords = `${originJsonData[0].lon},${originJsonData[0].lat}`;
       }
 
-      setTimeout(async () => {
+      const timeout = setTimeout(async () => {
         try {
           // API call to fetch the coords for the destination location
           const destinationJsonData = await getCities(
@@ -63,6 +64,8 @@ const Route = () => {
           setError(true);
         }
       }, 1000);
+
+      setTimeoutId(timeout);
     } catch (error) {
       setLoading(false);
       setError(true);
@@ -81,6 +84,14 @@ const Route = () => {
 
     handleSubmit();
   }, [confirmed]);
+
+  useEffect(() => {
+    return () => {
+      if (timeoutId) {
+        clearTimeout(timeoutId);
+      }
+    };
+  }, [timeoutId]);
 
   const handleLocationClick = () => {
     setConfirmed("true");

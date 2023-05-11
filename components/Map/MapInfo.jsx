@@ -2,11 +2,14 @@ import "leaflet/dist/leaflet.css";
 import React, { useEffect, useRef, useState } from "react";
 import { MapContainer, Marker, Popup, TileLayer } from "react-leaflet";
 
-const MapInfo = ({ confirmed }) => {
+import Recalculating from "../Feedback/Recalculating";
+
+const MapInfo = ({ confirmed, recalculate }) => {
   const mapRef = useRef(null);
   const [lat, setLat] = useState(51.505);
   const [lng, setLng] = useState(-0.09);
   const [zoom] = useState(18);
+  const [recalculating, setRecalculating] = useState(false);
 
   const myIcon = L.icon({
     iconUrl: "marker.svg",
@@ -16,11 +19,23 @@ const MapInfo = ({ confirmed }) => {
   });
 
   useEffect(() => {
-    if (confirmed === "true") {
+    if (confirmed === "true" && recalculate) {
+      setRecalculating(true);
       navigator.geolocation.getCurrentPosition((position) => {
         const coords = position.coords;
         setLat(coords.latitude);
         setLng(coords.longitude);
+        setRecalculating(false);
+        mapRef.current.setView([lat, lng], zoom);
+      });
+      return;
+    } else if (confirmed === "true" && !recalculate) {
+      setRecalculating(true);
+      navigator.geolocation.getCurrentPosition((position) => {
+        const coords = position.coords;
+        setLat(coords.latitude);
+        setLng(coords.longitude);
+        setRecalculating(false);
         mapRef.current.setView([lat, lng], zoom);
       });
       return;
@@ -29,7 +44,7 @@ const MapInfo = ({ confirmed }) => {
         mapRef.current.setView([lat, lng], zoom);
       }
     }
-  }, [confirmed, lat, lng, zoom]);
+  }, [confirmed, lat, lng, recalculate, zoom]);
 
   return (
     <>
@@ -38,7 +53,7 @@ const MapInfo = ({ confirmed }) => {
         center={[lat, lng]}
         zoom={zoom}
         scrollWheelZoom
-        style={{ height: "100%", width: "100%" }}
+        style={{ height: "100%", width: "100%", zIndex: 1 }}
       >
         <TileLayer
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
@@ -53,6 +68,8 @@ const MapInfo = ({ confirmed }) => {
           </Popup>
         </Marker>
       </MapContainer>
+
+      {recalculating && <Recalculating />}
     </>
   );
 };

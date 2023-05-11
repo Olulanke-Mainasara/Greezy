@@ -89,7 +89,9 @@ const DayForecast2 = () => {
           id="dayForecasts2"
           className="flex flex-col items-center justify-center w-full h-full gap-6 overflow-hidden"
         >
-          <h1 className="text-2xl text-center xs:text-xl">No weather info available</h1>
+          <h1 className="text-2xl text-center xs:text-xl">
+            No weather info available
+          </h1>
           <button
             className="px-8 py-2 text-black duration-300 bg-white border rounded-lg xs:px-4 hover:bg-black hover:text-white"
             onClick={handleLocationClick}
