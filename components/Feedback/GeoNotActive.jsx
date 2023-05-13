@@ -11,7 +11,7 @@ const GeoNotActive = ({ cancelSupported }) => {
       <h1 className="text-2xl text-center md:text-4xl">
         Geolocation is not active / supported
       </h1>
-      <p className="text-center w-[95%] max-w-lg">
+      <p className="text-center w-[93%] max-w-lg">
         Please check your settings and allow location access for this website or
         check your internet connectivity and make sure you are connected. If
         after confirming all these, it still doesn&apos;t work, then geolocation

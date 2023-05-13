@@ -20,11 +20,11 @@ const DayForecast2 = () => {
 
   const cancelSupported = () => {
     setSupported(true);
+    setError(null);
   };
 
   const handleLocationClick = () => {
     setConfirmed("true");
-    setError(null);
   };
 
   useEffect(() => {
@@ -70,7 +70,7 @@ const DayForecast2 = () => {
   }
 
   if (error) {
-    return <ErrorOccurred />;
+    return <ErrorOccurred cancelSupported={cancelSupported} />;
   }
 
   if (isError) {
@@ -121,7 +121,7 @@ const DayForecast2 = () => {
         <div className="flex items-center justify-between w-full xl:h-[20%] h-20">
           <h1>Date</h1>
           <h1>condition</h1>
-          <h1 className="text-center xs:w-min">temp (min-max)</h1>
+          <h1 className="text-center xs:w-min">temp°C (min-max)</h1>
         </div>
         {dates.map((date, index) => {
           const splitDate = date.split("-");

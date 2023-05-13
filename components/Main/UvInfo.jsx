@@ -68,7 +68,9 @@ const UvInfo = ({ confirmed }) => {
   if (isLoading) {
     return (
       <section className="flex flex-col items-center border shadow-2xl rounded-3xl justify-evenly md:h-48 h-44 xl:h-full">
-        <h1 className="text-xl">U.V Index</h1>
+        <h1 className="flex items-center gap-2 text-xl">
+          <FaSun /> U.V Index
+        </h1>
         <h1 id="uvIndex" className="text-5xl sm:text-7xl">
           - -
         </h1>
@@ -82,7 +84,9 @@ const UvInfo = ({ confirmed }) => {
   if (isError) {
     return (
       <section className="flex flex-col items-center border shadow-2xl rounded-3xl justify-evenly md:h-48 h-44 xl:h-full">
-        <h1 className="text-xl">U.V Index</h1>
+        <h1 className="flex items-center gap-2 text-xl">
+          <FaSun /> U.V Index
+        </h1>
         <h1 id="uvIndex" className="text-5xl sm:text-7xl">
           - -
         </h1>
@@ -96,7 +100,9 @@ const UvInfo = ({ confirmed }) => {
   if (data) {
     return (
       <section className="flex flex-col items-center border shadow-2xl rounded-3xl justify-evenly md:h-48 h-44 xl:h-full">
-        <h1 className="text-xl">U.V Index</h1>
+        <h1 className="flex items-center gap-2 text-xl">
+          <FaSun /> U.V Index
+        </h1>
         <h1 id="uvIndex" className="text-5xl sm:text-7xl">
           {data.uvNumber}
         </h1>
